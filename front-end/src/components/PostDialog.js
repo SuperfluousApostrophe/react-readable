@@ -1,25 +1,36 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import {createPost, editPost, deletePost } from '../actions'
+//import {createPost, editPost, deletePost } from '../actions'
 
 class PostDialog extends Component{
-  
+   state = {
+      isEdit:true
+   }
    render(){
+      const {categories} = this.props;
       
       return(
          <div className="row newPostSection col-sm-12 col-md-8 col-lg-10">
             <input type="text" placeholder="Post Title" className="col-md-12 col-lg-12"/><br/><br/>
-            <textarea placeholder="Post Body" className="col-md-12 col-lg-12"></textarea>
+            <textarea placeholder="Post Body" className="col-md-12 col-lg-12 postEntry"></textarea>
             <div className="col-md-12 col-lg-12">
-               <label htmlFor="newPostCategory" >Post In</label>
-               <select  className="newPostCategory">
-                  <option value="react">React</option>
-                  <option value="redux">Redux</option>
-                  <option value="udacity">Udacity</option>
-              </select>
-              <button className="btn btn-primary">Submit</button>  
-              <button className="btn btn-primary">Edit</button>
-              <button className="btn btn-danger">Delete</button>
+               <div className=" col-sm-12 col-md-3 col-lg-2 ">
+                  <label htmlFor="newPostCategory" >Post In &nbsp;</label>
+                  <select  className="newPostCategory" className="text-capitalize" >
+                     {categories.map(category => (
+                        <option key={category.path} value={category.name}>{category.name}</option>
+                     ))}
+                 </select>
+               </div>
+              <div className="btn-group col-sm-12 col-md-9 col-lg-10 pull-right">
+               {this.state.isEdit===false 
+               ? <button className="btn btn-primary">Submit</button> 
+               : <div>
+                  <button className="btn btn-info">Save</button>
+                  <button className="btn btn-danger">Delete</button> 
+               </div>
+               }
+               </div>
             </div>
          </div>
       );
@@ -27,16 +38,14 @@ class PostDialog extends Component{
 };
 function mapStateToProps (state) {
    return {
-      post: state.post,
-      name:'Mike',
-      categories:state.category,
+      categories:state.categories.categories,
    };
 }
 function mapDispatchToProps (dispatch) {
   return {
-    createPost: (data) => dispatch(createPost(data)),
-    editPost: (data) => dispatch(editPost(data)),
-    deletePost: (data) => dispatch(deletePost(data)),
+//    createPost: (data) => dispatch(createPost(data)),
+//    editPost: (data) => dispatch(editPost(data)),
+//    deletePost: (data) => dispatch(deletePost(data)),
   };
 }
 

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Route, Link, Location } from 'react-router-dom';
+import { Route, Link, Location, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {fetchPosts, selectCategory } from '../actions/actions';
 
@@ -13,8 +13,9 @@ class PostRow extends Component {
       let catPath = ownProps.match.params.category;
       if(!catPath){catPath = 'all';}
       console.log("cat path is ",catPath);
-      
-      selectCategory(catPath);
+      if(catPath!==globalSettings.selectedCat){
+         selectCategory(catPath);
+      }
       
       let currentCat = globalSettings.selectedCat;
 //      console.log(globalSettings.selectedCat);
@@ -32,7 +33,7 @@ class PostRow extends Component {
          let rows = [];
          if(filteredPosts.length===0){
 //            console.log("empty");
-            rows.push(<div key="err" className=" col-sm-12 col-md-12 col-lg-12 text-center">Sorry, no posts available in the <span className="text-uppercase">{globalSettings.selectedCat}</span> category</div>);
+            rows.push(<div key="err" className=" col-sm-12 col-md-12 col-lg-12">Sorry, no posts available in the <span className="text-uppercase">{globalSettings.selectedCat}</span> category</div>);
          } else {
             for(let post of filteredPosts){
                rows.push(<div key={post.id} className="row col-sm-12 col-md-12 col-lg-12">
@@ -49,17 +50,15 @@ class PostRow extends Component {
          <div className="posts"> 
             <Route path='/' render={ ()=>(
                <div className="row col-sm-12 col-md-8 col-lg-10">
-               <div className="row col-sm-12 col-md-12 col-lg-12 btn-group">
-                  <button>New Post</button>
+                  <h2>Showing {currentCat} Posts</h2>
+                  <div className="row col-sm-12 col-md-12 col-lg-12">
+                     <div className="voteScore col-sm-1">Score</div>
+                     <div className="postCategory col-sm-2">Category</div> 
+                     <div className="postTitle col-sm-6">Title</div>
+                     <div className="postTitle col-sm-3">Author</div>
+                  </div>  
+                  { buildPostRows() }
                </div>
-               <h2>Showing {currentCat} Posts</h2>
-               <div className="row col-sm-12 col-md-12 col-lg-12">
-                  <div className="voteScore col-sm-1">&nbsp;</div>
-                  <div className="postCategory col-sm-2">Category</div> 
-                  <div className="postTitle col-sm-9">Title</div>
-               </div>  
-               { buildPostRows() }
-            </div>
              )} />
          </div>
       );
@@ -90,7 +89,7 @@ function mapDispatchToProps (dispatch) {
   };
 }
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(PostRow)
+)(PostRow))

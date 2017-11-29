@@ -17,3 +17,9 @@ li.cat-list {
      cursor: pointer;
      text-transform: uppercase;
 }
+.posts h2 {
+    margin-top:10px;
+}
+textarea.postEntry {
+    height:200px;
+}
