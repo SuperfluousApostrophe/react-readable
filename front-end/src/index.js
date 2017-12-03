@@ -25,11 +25,14 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
    reducer, 
    composeEnhancers(
-      applyMiddleware(logger, thunk)
+      applyMiddleware(
+//         logger, 
+         thunk
+      )
    )
 );
 store.dispatch(fetchPosts());
 store.dispatch(fetchCategories());
-console.log(store.getState());
+//console.log(store.getState());
 ReactDOM.render(<Provider store={store}><BrowserRouter><App /></BrowserRouter></Provider>, document.getElementById('root'));
 registerServiceWorker();

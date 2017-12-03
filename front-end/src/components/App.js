@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import Sidebar from './Sidebar.js';
 import PostDialog from './PostDialog.js';
-import PostRow from './PostRow.js';
-import { Route, Switch } from 'react-router-dom'
-//import PostDetail from './PostDetail.js';
+import PostList from './PostList.js';
+import { Route, Switch, withRouter } from 'react-router-dom'
+import PostDetail from './PostDetail.js';
 //import * as APIRequest from '../utils/api'
 //import {getCategories } from '../actions/actions'
 //import logo from './logo.svg';
@@ -31,10 +31,10 @@ class App extends Component {
             <button className="btn btn-primary" onClick={(event)=>this.openPostModal(event)}>New Post</button>
          </div>
          <Switch>
-            <Route exact path='/' component={PostRow}/>
-            <Route path='/cat/:category' component={PostRow}/>
+            <Route exact path='/' component={PostList}/>
+            <Route exact path='/cat/:category' component={PostList}/>
+            <Route exact path='/cat/:category/post/:postId' component={PostDetail}/>
          </Switch>
-         <PostDialog/>   
          <Sidebar/>
       </div>
     );
@@ -58,7 +58,7 @@ function mapDispatchToProps (dispatch) {
   };
 }
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(App)
+)(App));

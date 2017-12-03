@@ -2,10 +2,6 @@ export const CREATE_POST = 'CREATE_POST';
 export const DELETE_POST = 'DELETE_POST';
 export const EDIT_POST = 'EDIT_POST';
 export const GET_POSTS = 'GET_POSTS';
-//export const CREATE_COMMENT ='CREATE_COMMENT';
-//export const EDIT_COMMENT = 'EDIT_COMMENT';
-//export const DELETE_COMMENT = 'DELETE_COMMENT';
-//export const CATEGORY_LIST = 'CATEGORY_LIST';
 
 export const GET_CATEGORIES = 'GET_CATEGORIES';
 export const getCategories = categories =>({
@@ -28,7 +24,7 @@ export function fetchCategories(){
 //               console.log(cat);
                dispatch(addCategoryToPostList(cat));
             }
-      })
+      });
    };
 }
 export const RECEIVE_POSTS = 'RECEIVE_POSTS';
@@ -76,3 +72,49 @@ export function selectCategory(categoryName){
       selectedCat:categoryName
    };
 }
+
+/* This is a thunk, not an action creator*/
+/* Fetches a single Post - will be used when upvoting - maybe*/
+export function fetchSinglePost(postId){
+   const authHeader = {'Authorization': 'true'}
+   return function(dispatch){
+      return fetch('http://localhost:3001/posts/'+postId, { headers: authHeader })
+      .then(
+         response => response.json(),
+         error => console.log('An error occurred.', error)
+      )
+      .then(
+         post => {
+            console.log(post);
+//            for(let post of posts){
+////               console.log(post);
+//               dispatch(addPostToCategory(post));
+//            }
+////            console.log(posts);
+//            //call the action creator receivePosts
+//            dispatch(receivePosts(posts));
+      });
+   };
+}
+
+
+
+
+
+
+/* Requests a single post */
+export const GET_SINGLE_POST = 'GET_SINGLE_POST';
+export const getSinglePost = postId =>({
+   type:GET_SINGLE_POST,
+   postId:postId
+});
+///* Requests all comments for a single post */
+//export const GET_COMMENTS_FOR_POST = 'GET_COMMENTS_FOR_POST';
+//export const getSinglePost = postId =>({
+//   type:GET_COMMENTS_FOR_POST,
+//   postId:postId
+//});
+
+
+
+

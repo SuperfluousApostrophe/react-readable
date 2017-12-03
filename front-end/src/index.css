@@ -23,3 +23,6 @@ li.cat-list {
 textarea.postEntry {
     height:200px;
 }
+.postDetailBody{
+    border: 1px solid black;
+}

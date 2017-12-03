@@ -3,31 +3,48 @@ import { Route, Link, Location, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {fetchPosts, selectCategory } from '../actions/actions';
 
-class PostRow extends Component {
-   
-   
+class PostList extends Component {
+   constructor(props) {
+      super(props);
+//      this.updateselectedCategory();
+   }
+   updateselectedCategory = function(){
+//      console.log(this.props);
+      let catPath = this.props.ownProps.match.params.category;
+      if(!catPath){catPath = 'all';}
+//      console.log("cat path is ",catPath);
+//      console.log("selected cat is ",this.props.globalSettings.selectedCat);
+      
+      if(catPath!==this.props.globalSettings.selectedCat){
+//         console.log("changing selected category");
+         this.props.selectCategory(catPath);
+      }
+   };
+   componentWillMount(){
+         console.log(this.props);
+         const {posts, match } = this.props;
+         console.log(match);
+         const {postId, category} = match.params;
+         console.log(posts);
+         console.log(postId);
+//         this.setState({currentPost:posts.filter(post => post.id === postId)[0]});
+//         console.log(this.state.currentPost);
+   }
+   componentDidUpdate(){
+      
+//      console.log("component did update");
+      this.updateselectedCategory();
+   }
    render(){
       
-      const {posts, postsByCat, globalSettings, ownProps, selectCategory} = this.props;
-      console.log(ownProps.match.params.category);
-      let catPath = ownProps.match.params.category;
-      if(!catPath){catPath = 'all';}
-      console.log("cat path is ",catPath);
-      if(catPath!==globalSettings.selectedCat){
-         selectCategory(catPath);
-      }
-      
+      const {posts, postsByCat, globalSettings, ownProps, selectCategory, location} = this.props;
       let currentCat = globalSettings.selectedCat;
-//      console.log(globalSettings.selectedCat);
-//      console.log(postsByCat);
-//      console.log(posts);
       
       let filteredPosts = [];
          //filter the posts based on the selected cat
          if(postsByCat.hasOwnProperty(globalSettings.selectedCat)){
             filteredPosts = posts.filter(post => postsByCat[globalSettings.selectedCat].indexOf(post.id) !== -1);
          } 
-//      console.log(filteredPosts);
       
       function buildPostRows(){
          let rows = [];
@@ -36,30 +53,31 @@ class PostRow extends Component {
             rows.push(<div key="err" className=" col-sm-12 col-md-12 col-lg-12">Sorry, no posts available in the <span className="text-uppercase">{globalSettings.selectedCat}</span> category</div>);
          } else {
             for(let post of filteredPosts){
-               rows.push(<div key={post.id} className="row col-sm-12 col-md-12 col-lg-12">
-                  <div className="voteScore col-sm-1">{post.voteScore}</div>   
-                  <div className="postCategory col-sm-2">{post.category}</div> 
-                  <div className="postTitle col-sm-9">{post.title}</div>
-               </div>); 
+               let path = `/cat/${post.category}/post/${post.id}`;
+               rows.push(
+                  <div key={post.id} className="row col-sm-12 col-md-12 col-lg-12">
+                  
+                     <div className="voteScore col-sm-1"> <Link to={path}>{post.voteScore}</Link></div>   
+                     <div className="postCategory col-sm-2"> <Link to={path}>{post.category}</Link></div> 
+                     <div className="postTitle col-sm-6"> <Link to={path}>{post.title}</Link></div>
+                     <div className="postAuthor col-sm-3"> <Link to={path}>{post.author}</Link></div>
+                  </div>
+               ); 
             }
          }
 //         console.log(rows);
          return rows;
       }
       return(
-         <div className="posts"> 
-            <Route path='/' render={ ()=>(
-               <div className="row col-sm-12 col-md-8 col-lg-10">
+         <div className="posts row col-sm-12 col-md-8 col-lg-10"> 
                   <h2>Showing {currentCat} Posts</h2>
                   <div className="row col-sm-12 col-md-12 col-lg-12">
                      <div className="voteScore col-sm-1">Score</div>
                      <div className="postCategory col-sm-2">Category</div> 
                      <div className="postTitle col-sm-6">Title</div>
-                     <div className="postTitle col-sm-3">Author</div>
+                     <div className="postAuthor col-sm-3">Author</div>
                   </div>  
                   { buildPostRows() }
-               </div>
-             )} />
          </div>
       );
    };
@@ -92,4 +110,4 @@ function mapDispatchToProps (dispatch) {
 export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(PostRow))
+)(PostList))
