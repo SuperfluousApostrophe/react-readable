@@ -6,25 +6,13 @@ const defaultCategoryList = {categories: []};
 function post(state = defaultPostState, action) {
    const {title, body, author, category, timestamp, id} = action;
    const ALL = "all";
-//   console.log("actionType",action.type);
-/**
- * var result = arr.reduce(function(map, obj) {
-    map[obj.key] = obj.val;
-    return map;
-}, {});
- */
    switch (action.type) {
       case RECEIVE_POSTS:
          return {
             ...state,
              items: action.posts
-//            items: action.posts.reduce(function(map, obj) {
-//               map[obj.id] = obj;
-//               return map;
-//           }, {})
          };
       case ADD_POST_TO_CAT:
-         
          return {
             ...state,//spread the state
             postsByCategory:{
@@ -78,17 +66,6 @@ function post(state = defaultPostState, action) {
                )
            ]
          };
-                  
-//      case ADD_POST_TO_CATEGORY:
-//         return{
-//            ...state,
-//            postsByCategory:{
-//               category:{
-//                  ...state[category],
-//                  id
-//               }
-//            }
-//         };
 //      case CREATE_POST:
 //         return {
 //            ...state,
@@ -116,8 +93,8 @@ function post(state = defaultPostState, action) {
 //         };
       default:
          return state;
-}
-}
+   }
+};
 function categories(state = defaultCategoryList, action) {
    switch (action.type) {
       case GET_CATEGORIES:
@@ -131,12 +108,10 @@ function categories(state = defaultCategoryList, action) {
       default:
          return state;
 }
-}
-;
-function foo(state = {text:"I am a monkey"}, action){
-   return state;
-}
-;
+};
+
+
+
 
 function globalStateSettings(state = {selectedCat:"all"}, action){
    switch (action.type) {
@@ -148,7 +123,7 @@ function globalStateSettings(state = {selectedCat:"all"}, action){
       default:
          return state;
 }
-}
+};
 
 //import {
 //   ADD_RECIPE,
@@ -233,10 +208,7 @@ function globalStateSettings(state = {selectedCat:"all"}, action){
 //}
 
 export default combineReducers({
-//      food,
-//      calendar
    post,
    categories,
-   foo, 
    globalStateSettings
 })
