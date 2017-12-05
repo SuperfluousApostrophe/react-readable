@@ -1,34 +1,29 @@
 import React, {Component} from 'react';
-import { Route, Link, Location, withRouter } from 'react-router-dom';
+import {  withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import {fetchPosts, selectCategory } from '../actions/actions';
-import FontAwesome from 'react-fontawesome';
-import VoteControl from './VoteControl.js';
+import { selectCategory } from '../actions/actions';
+//import FontAwesome from 'react-fontawesome';
+import PostListItem from './PostListItem.js';
 
 class PostList extends Component {
-   constructor(props) {
-      super(props);
-//      this.updateselectedCategory();
-   }
+//   constructor(props) {
+//      super(props);
+//   }
    updateselectedCategory = function(){
-//      console.log(this.props);
       let catPath = this.props.ownProps.match.params.category;
       if(!catPath){catPath = 'all';}
-//      console.log("cat path is ",catPath);
-//      console.log("selected cat is ",this.props.globalSettings.selectedCat);
       
       if(catPath!==this.props.globalSettings.selectedCat){
-//         console.log("changing selected category");
          this.props.selectCategory(catPath);
       }
    };
    componentWillMount(){
-         console.log(this.props);
+//         console.log(this.props);
          const {posts, match } = this.props;
-         console.log(match);
+//         console.log(match);
          const {postId, category} = match.params;
-         console.log(posts);
-         console.log(postId);
+//         console.log(posts);
+//         console.log(postId);
 //         this.setState({currentPost:posts.filter(post => post.id === postId)[0]});
 //         console.log(this.state.currentPost);
    }
@@ -51,35 +46,19 @@ class PostList extends Component {
       function buildPostRows(){
          let rows = [];
          if(filteredPosts.length===0){
-//            console.log("empty");
             rows.push(<div key="err" className=" col-sm-12 col-md-12 col-lg-12">Sorry, no posts available in the <span className="text-uppercase">{globalSettings.selectedCat}</span> category</div>);
          } else {
             for(let post of filteredPosts){
-               let path = `/cat/${post.category}/post/${post.id}`;
-               rows.push(
-                  <div key={post.id} className="row col-sm-12 col-md-12 col-lg-12">
-                  
-                     <div className="voteScore col-sm-2 col-md-3"><VoteControl currentScore={post.voteScore} postId={post.id}/></div>
-                     <div className="postCategory col-sm-2 col-md-2"> <Link to={path}>{post.category}</Link></div> 
-                     <div className="postTitle col-sm-5 col-md-5"> <Link to={path}>{post.title} [{post.commentCount}]</Link></div>
-                     <div className="postAuthor col-sm-3 col-md-2"> <Link to={path}>{post.author}</Link></div>
-                  </div>
-               ); 
+               rows.push(<PostListItem  key={post.id} post={post}/>); 
             }
          }
-//         console.log(rows);
          return rows;
       }
       return(
          <div className="posts row col-sm-12 col-md-8 col-lg-10"> 
-                  <h2>Showing {currentCat} Posts</h2>
-                  <div className="row col-sm-12 col-md-12 col-lg-12">
-                     <div className="voteScore  col-sm-2 col-md-3">Score</div>
-                     <div className="postCategory col-sm-2 col-md-2">Category</div> 
-                     <div className="postTitle col-sm-5 col-md-5">Title</div>
-                     <div className="postAuthor col-sm-3 col-md-2">Author</div>
-                  </div>  
-                  { buildPostRows() }
+            <h2>Showing {currentCat} Posts</h2>
+            <PostListItem/> 
+            { buildPostRows() }
          </div>
       );
    };
@@ -101,11 +80,8 @@ function mapStateToProps (state, ownProps) {
  */
 function mapDispatchToProps (dispatch) {
   return {
-      fetchPosts: (data) => dispatch(fetchPosts(data)),
+//      fetchPosts: (data) => dispatch(fetchPosts(data)),
       selectCategory: (data) => dispatch(selectCategory(data)),
-//    createPost: (data) => dispatch(createPost(data)),
-//    editPost: (data) => dispatch(editPost(data)),
-//    deletePost: (data) => dispatch(deletePost(data)),
   };
 }
 
