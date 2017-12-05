@@ -97,6 +97,21 @@ export function fetchSinglePost(postId){
    };
 }
 
+/*
+ * 
+ * next steps: 
+ * -create actions/reducers to retrieve comments for each post. 
+ * -- on first load of post, pull all comments for that post and save in store. 
+ * -- then on each subsequent load of post, pull from comment store instead of API call
+ * 
+ * -fix sidebar route issue
+ * -create post
+ * -edit post
+ * -(soft) delete post
+ * -create/edit/delete comments
+ * -Upvotes
+ * 
+ */
 
 
 
