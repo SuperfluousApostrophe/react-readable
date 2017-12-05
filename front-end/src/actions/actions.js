@@ -100,16 +100,10 @@ export function saveSinglePost(data){
  */
 export function vote(data){
    const {voteType, postId} = data;
-   console.log('trying to vote', data);
-   console.log(JSON.stringify({
-             option: voteType,
-           }));
-   
    const authHeader = {'Authorization': 'true', 'Content-Type': 'application/json'};
    return function(dispatch){
       return fetch('http://localhost:3001/posts/'+postId, { 
          headers: authHeader, 
-         
          method:'POST' , 
          body: JSON.stringify({
              option: voteType,
@@ -121,15 +115,7 @@ export function vote(data){
       )
       .then(
          updatedPost => {
-            console.log(updatedPost);
             dispatch(saveSinglePost(updatedPost));
-//            for(let post of posts){
-////               console.log(post);
-//               dispatch(addPostToCategory(post));
-//            }
-////            console.log(posts);
-//            //call the action creator receivePosts
-//            dispatch(receivePosts(posts));
       });
    };
 }

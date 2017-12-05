@@ -38,7 +38,7 @@ class PostList extends Component {
       let currentCat = globalSettings.selectedCat;
       
       let filteredPosts = [];
-      console.log(posts);
+//      console.log(posts);
          //filter the posts based on the selected cat
          if(postsByCat.hasOwnProperty(globalSettings.selectedCat)){
             filteredPosts = posts.filter(post => postsByCat[globalSettings.selectedCat].indexOf(post.id) !== -1);
