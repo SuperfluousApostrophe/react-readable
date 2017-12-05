@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-//import {fetchSinglePost } from '../actions/actions';
+import {fetchCommentsForPost } from '../actions/actions';
 import PostDetailBody from './PostDetailBody.js';
 
 class PostDetail extends Component{
@@ -9,7 +9,11 @@ class PostDetail extends Component{
 //      console.log("setting current post");
       this.setState({currentPost:this.posts.filter(post => post.id === postId)[0]});
    }
-   
+   componentDidMount(){
+//      console.log("component mounted");
+//      console.log('postId',this.props.match.params.postId);
+      this.props.fetchCommentsForPost({postId:this.props.match.params.postId});
+   }
    render(){
       const postId = this.props.match.params.postId;
       const currentPost = this.props.posts.filter(post => post.id === postId)[0];
@@ -34,6 +38,7 @@ function mapStateToProps (state, ownProps) {
 function mapDispatchToProps (dispatch) {
   return {
 //     fetchSinglePost: (data) => dispatch(fetchSinglePost(data)),
+      fetchCommentsForPost:(data) => dispatch(fetchCommentsForPost(data)),
   };
 }
 

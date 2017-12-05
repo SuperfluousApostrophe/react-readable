@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux';
-import {SAVE_SINGLE_POST,GET_CATEGORIES, RECEIVE_POSTS, CHANGE_CAT, ADD_POST_TO_CAT,ADD_CAT_TO_POST_LIST} from '../actions/actions.js';
+import {RECEIVE_COMMENTS_FOR_POST,SAVE_SINGLE_POST,GET_CATEGORIES, RECEIVE_POSTS, CHANGE_CAT, ADD_POST_TO_CAT,ADD_CAT_TO_POST_LIST} from '../actions/actions.js';
 const defaultPostState = {items: [], postsByCategory:{all:[]} };
 const defaultCategoryList = {categories: []};
+const defaultComments = {};
 
 function post(state = defaultPostState, action) {
    const {title, body, author, category, timestamp, id} = action;
@@ -95,6 +96,19 @@ function post(state = defaultPostState, action) {
          return state;
    }
 };
+function comments(state = defaultComments, action){
+   const {id, comments} = action;
+   switch(action.type){
+      case RECEIVE_COMMENTS_FOR_POST:
+         return {
+            ...state,//spread the state
+            [action.id]:comments     
+      };
+      default:
+         return state;
+   }
+};
+
 function categories(state = defaultCategoryList, action) {
    switch (action.type) {
       case GET_CATEGORIES:
@@ -210,5 +224,6 @@ function globalStateSettings(state = {selectedCat:"all"}, action){
 export default combineReducers({
    post,
    categories,
+   comments,
    globalStateSettings
 })

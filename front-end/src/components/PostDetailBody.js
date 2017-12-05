@@ -7,7 +7,7 @@ class PostDetailBody extends Component{
    
    render(){
       const {currentPost} = this.props;
-      console.log(currentPost);
+//      console.log(currentPost);
       return( 
               <div className="row postDetail col-sm-12 col-md-8 col-lg-10">{currentPost!==undefined && 
               <div> 

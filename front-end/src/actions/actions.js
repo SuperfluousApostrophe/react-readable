@@ -65,6 +65,37 @@ export function fetchPosts(){
    };
 }
 
+export const RECEIVE_COMMENTS_FOR_POST = 'RECEIVE_COMMENTS_FOR_POST';
+export function receiveCommentsForPost(data){
+   const {postId, comments} = data;
+   return {
+      type: RECEIVE_COMMENTS_FOR_POST,
+      id: postId,
+      comments
+   };
+};
+/* This is a thunk, not an action creator*/
+export function fetchCommentsForPost(data){
+   const {postId} = data;
+//   console.log("trying to fetch comments for ", postId);
+   const authHeader = {'Authorization': 'true'};
+//   console.log(authHeader);
+   return function(dispatch){
+//      console.log('doing fetch');
+      return fetch('http://localhost:3001/posts/'+postId+'/comments', { headers: authHeader })
+      .then(
+         response => response.json(),
+         error => console.log('An error occurred.', error)
+      )
+      .then(
+         comments => {
+//           console.log("here");
+//            console.log("Comments",comments);
+            dispatch(receiveCommentsForPost({postId:postId, comments}));
+      });
+   };
+}
+
 export const CHANGE_CAT = 'CHANGE_CAT';
 export function selectCategory(categoryName){
    return {
