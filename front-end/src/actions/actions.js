@@ -72,36 +72,57 @@ export function selectCategory(categoryName){
       selectedCat:categoryName
    };
 }
-export const CHANGE_VOTE_SCORE = 'VOTE';
-export function changeVoteScore(data){
-   const {voteVal, postId} = data;
-//   console.log('in action creater', voteVal, postId);
+/* When we set the vote val on the server, we receive the latest obj back from the server. Update the version in our local store. */
+//export const CHANGE_VOTE_SCORE = 'VOTE';
+//export function changeVoteScore(data){
+//   const {voteVal, postId} = data;
+////   console.log('in action creater', voteVal, postId);
+//   return {
+//      type:CHANGE_VOTE_SCORE,
+//      vote:voteVal, 
+//      id:postId
+//   };
+//}
+export const SAVE_SINGLE_POST = 'SAVE_SINGLE_POST';
+export function saveSinglePost(data){
    return {
-      type:CHANGE_VOTE_SCORE,
-      vote:voteVal, 
-      id:postId
+      type:SAVE_SINGLE_POST,
+      id:data.id,
+      post: data
    };
 }
+
+
 /* This is a thunk, not an action creator*/
 /*
  * changes the vote on the server by calling the API
  * 
  */
-export function vote(voteType, postId){
-   const authHeader = {'Authorization': 'true'};
+export function vote(data){
+   const {voteType, postId} = data;
+   console.log('trying to vote', data);
+   console.log(JSON.stringify({
+             option: voteType,
+           }));
+   
+   const authHeader = {'Authorization': 'true', 'Content-Type': 'application/json'};
    return function(dispatch){
       return fetch('http://localhost:3001/posts/'+postId, { 
          headers: authHeader, 
-         method:'post' , 
-         body:{option:voteType}},
-      )
+         
+         method:'POST' , 
+         body: JSON.stringify({
+             option: voteType,
+           })
+      })
       .then(
          response => response.json(),
          error => console.log('An error occurred.', error)
       )
       .then(
-         response => {
-            console.log(response);
+         updatedPost => {
+            console.log(updatedPost);
+            dispatch(saveSinglePost(updatedPost));
 //            for(let post of posts){
 ////               console.log(post);
 //               dispatch(addPostToCategory(post));

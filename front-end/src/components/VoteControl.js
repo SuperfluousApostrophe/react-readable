@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import FontAwesome from 'react-fontawesome';
 import { connect } from 'react-redux'
-import {changeVoteScore} from '../actions/actions';
+import {vote} from '../actions/actions';
 
 class VoteControl extends Component{
    constructor(props) {
@@ -13,7 +13,8 @@ class VoteControl extends Component{
         upVote:1,
         downVote:-1
       };
-      this.props.changeVoteScore({voteVal:voteVals[voteType],postId:postId});
+//      this.props.changeVoteScore({voteVal:voteVals[voteType],postId:postId});
+      this.props.vote({voteType:voteType,postId:postId});
    }
    render(){
       const {postId, currentScore, state} = this.props;
@@ -41,7 +42,8 @@ function mapStateToProps (state, ownProps) {
 function mapDispatchToProps (dispatch) {
   return {
 //     fetchSinglePost: (data) => dispatch(fetchSinglePost(data)),
-      changeVoteScore: (data) => dispatch(changeVoteScore(data))
+//      changeVoteScore: (data) => dispatch(changeVoteScore(data)),
+      vote: (data) => dispatch(vote(data)),
   };
 }
 

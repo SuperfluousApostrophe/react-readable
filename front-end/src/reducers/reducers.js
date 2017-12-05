@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import {CHANGE_VOTE_SCORE,GET_CATEGORIES, RECEIVE_POSTS, CHANGE_CAT, ADD_POST_TO_CAT,ADD_CAT_TO_POST_LIST} from '../actions/actions.js';
+import {SAVE_SINGLE_POST,GET_CATEGORIES, RECEIVE_POSTS, CHANGE_CAT, ADD_POST_TO_CAT,ADD_CAT_TO_POST_LIST} from '../actions/actions.js';
 const defaultPostState = {items: [], postsByCategory:{all:[]} };
 const defaultCategoryList = {categories: []};
 
@@ -50,14 +50,28 @@ function post(state = defaultPostState, action) {
               
             }
          };
-      case CHANGE_VOTE_SCORE:
+//      case CHANGE_VOTE_SCORE:
+//         return {
+//            ...state,
+//            items: [ 
+//               ...state.items.map(
+//                  function(item, index){
+//                     if(item.id === id){
+//                        item.voteScore +=action.vote
+//                     }
+//                     return item;
+//                  }
+//               )
+//           ]
+//         };
+         case SAVE_SINGLE_POST:
          return {
             ...state,
             items: [ 
                ...state.items.map(
                   function(item, index){
                      if(item.id === id){
-                        item.voteScore +=action.vote
+                        item = action.post;
                      }
                      return item;
                   }
