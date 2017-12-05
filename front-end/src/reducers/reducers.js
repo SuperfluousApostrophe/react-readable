@@ -1,17 +1,27 @@
 import { combineReducers } from 'redux';
-import {GET_CATEGORIES, RECEIVE_POSTS, CHANGE_CAT, ADD_POST_TO_CAT,ADD_CAT_TO_POST_LIST} from '../actions/actions.js';
+import {CHANGE_VOTE_SCORE,GET_CATEGORIES, RECEIVE_POSTS, CHANGE_CAT, ADD_POST_TO_CAT,ADD_CAT_TO_POST_LIST} from '../actions/actions.js';
 const defaultPostState = {items: [], postsByCategory:{all:[]} };
 const defaultCategoryList = {categories: []};
-//
+
 function post(state = defaultPostState, action) {
    const {title, body, author, category, timestamp, id} = action;
    const ALL = "all";
+//   console.log("actionType",action.type);
+/**
+ * var result = arr.reduce(function(map, obj) {
+    map[obj.key] = obj.val;
+    return map;
+}, {});
+ */
    switch (action.type) {
       case RECEIVE_POSTS:
          return {
             ...state,
-            items: action.posts
-//           action.posts
+             items: action.posts
+//            items: action.posts.reduce(function(map, obj) {
+//               map[obj.id] = obj;
+//               return map;
+//           }, {})
          };
       case ADD_POST_TO_CAT:
          
@@ -40,6 +50,21 @@ function post(state = defaultPostState, action) {
               
             }
          };
+      case CHANGE_VOTE_SCORE:
+         return {
+            ...state,
+            items: [ 
+               ...state.items.map(
+                  function(item, index){
+                     if(item.id === id){
+                        item.voteScore +=action.vote
+                     }
+                     return item;
+                  }
+               )
+           ]
+         };
+                  
 //      case ADD_POST_TO_CATEGORY:
 //         return{
 //            ...state,

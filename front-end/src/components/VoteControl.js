@@ -1,17 +1,27 @@
 import React, {Component} from 'react';
 import FontAwesome from 'react-fontawesome';
 import { connect } from 'react-redux'
+import {changeVoteScore} from '../actions/actions';
 
 class VoteControl extends Component{
-   
+   constructor(props) {
+      super(props);
+   }
+   vote = function(voteType, postId, e){
+      e.preventDefault();
+      const voteVals = {
+        upVote:1,
+        downVote:-1
+      };
+      this.props.changeVoteScore({voteVal:voteVals[voteType],postId:postId});
+   }
    render(){
-      const {postId, currentScore} = this.props;
-//      console.log(currentPost);
+      const {postId, currentScore, state} = this.props;
       return( 
             <div> 
-                  <FontAwesome className="voteControl" name='arrow-down' />
+                  <FontAwesome className="voteControl" name='arrow-down' onClick={(e)=>this.vote('downVote', postId,e)}/>
                   {currentScore}
-                  <FontAwesome className="voteControl" name='arrow-up' />
+                  <FontAwesome className="voteControl" name='arrow-up'  onClick={(e)=>this.vote('upVote',postId,e)}/>
          </div>
       );
    };
@@ -22,7 +32,7 @@ class VoteControl extends Component{
  */
 function mapStateToProps (state, ownProps) {
    return {
-//      posts: state.post.items,
+      state:state
    };
 }
 /*
@@ -31,6 +41,7 @@ function mapStateToProps (state, ownProps) {
 function mapDispatchToProps (dispatch) {
   return {
 //     fetchSinglePost: (data) => dispatch(fetchSinglePost(data)),
+      changeVoteScore: (data) => dispatch(changeVoteScore(data))
   };
 }
 
