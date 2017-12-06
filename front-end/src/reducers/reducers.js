@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
-import {RECEIVE_COMMENTS_FOR_POST,SAVE_SINGLE_POST,GET_CATEGORIES, RECEIVE_POSTS, CHANGE_CAT, ADD_POST_TO_CAT,ADD_CAT_TO_POST_LIST} from '../actions/actions.js';
+import {SAVE_SINGLE_COMMENT,RECEIVE_COMMENTS_FOR_POST,SAVE_SINGLE_POST,GET_CATEGORIES, RECEIVE_POSTS, CHANGE_CAT, ADD_POST_TO_CAT,ADD_CAT_TO_POST_LIST} from '../actions/actions.js';
 const defaultPostState = {items: [], postsByCategory:{all:[]} };
 const defaultCategoryList = {categories: []};
 const defaultComments = {};
 
 function post(state = defaultPostState, action) {
-   const {title, body, author, category, timestamp, id} = action;
+   const {category, id} = action;
    const ALL = "all";
    switch (action.type) {
       case RECEIVE_POSTS:
@@ -104,6 +104,20 @@ function comments(state = defaultComments, action){
             ...state,//spread the state
             [action.id]:comments     
       };
+      case SAVE_SINGLE_COMMENT:
+         return {
+            ...state,
+            [action.postId]: [ 
+               ...state[action.postId].map(
+                  function(comment, index){
+                     if(comment.id === action.comment.id){
+                        comment = action.comment;
+                     }
+                     return comment;
+                  }
+               )
+           ]
+         };
       default:
          return state;
    }

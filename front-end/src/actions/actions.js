@@ -122,7 +122,14 @@ export function saveSinglePost(data){
       post: data
    };
 }
-
+export const SAVE_SINGLE_COMMENT = 'SAVE_SINGLE_COMMENT';
+export function saveSingleComment(data){
+   return {
+      type:SAVE_SINGLE_COMMENT,
+      postId:data.parentId,
+      comment: data
+   };
+}
 
 /* This is a thunk, not an action creator*/
 /*
@@ -130,10 +137,19 @@ export function saveSinglePost(data){
  * 
  */
 export function vote(data){
-   const {voteType, postId} = data;
+   const {voteType, id, voteObjType} = data;
    const authHeader = {'Authorization': 'true', 'Content-Type': 'application/json'};
    return function(dispatch){
-      return fetch('http://localhost:3001/posts/'+postId, { 
+      let requestURL;
+      switch(voteObjType){
+         case 'comment':
+            requestURL = 'http://localhost:3001/comments/'+id;
+            break;
+         default:
+            requestURL = 'http://localhost:3001/posts/'+id;
+            break;
+      }
+      return fetch(requestURL, { 
          headers: authHeader, 
          method:'POST' , 
          body: JSON.stringify({
@@ -145,8 +161,11 @@ export function vote(data){
          error => console.log('An error occurred.', error)
       )
       .then(
-         updatedPost => {
-            dispatch(saveSinglePost(updatedPost));
+         updatedObj => {
+            if(voteObjType === 'post')
+               dispatch(saveSinglePost(updatedObj));
+            else
+                dispatch(saveSingleComment(updatedObj));
       });
    };
 }

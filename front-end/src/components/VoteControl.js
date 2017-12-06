@@ -4,25 +4,21 @@ import { connect } from 'react-redux'
 import {vote} from '../actions/actions';
 
 class VoteControl extends Component{
-   constructor(props) {
-      super(props);
-   }
-   vote = function(voteType, postId, e){
+   vote = function(voteType, id, e){
       e.preventDefault();
-      const voteVals = {
-        upVote:1,
-        downVote:-1
-      };
-//      this.props.changeVoteScore({voteVal:voteVals[voteType],postId:postId});
-      this.props.vote({voteType:voteType,postId:postId});
+//      const voteVals = {
+//        upVote:1,
+//        downVote:-1
+//      };
+      this.props.vote({voteType:voteType,id:id, voteObjType:this.props.voteType});
    }
    render(){
-      const {postId, currentScore, state} = this.props;
+      const {id, currentScore} = this.props;
       return( 
             <div> 
-                  <FontAwesome className="voteControl" name='arrow-down' onClick={(e)=>this.vote('downVote', postId,e)}/>
+                  <FontAwesome className="voteControl" name='arrow-down' onClick={(e)=>this.vote('downVote', id,e)}/>
                   {currentScore}
-                  <FontAwesome className="voteControl" name='arrow-up'  onClick={(e)=>this.vote('upVote',postId,e)}/>
+                  <FontAwesome className="voteControl" name='arrow-up'  onClick={(e)=>this.vote('upVote',id,e)}/>
          </div>
       );
    };
@@ -33,7 +29,7 @@ class VoteControl extends Component{
  */
 function mapStateToProps (state, ownProps) {
    return {
-      state:state
+//      state:state
    };
 }
 /*

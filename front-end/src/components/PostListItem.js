@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import FontAwesome from 'react-fontawesome';
+//import FontAwesome from 'react-fontawesome';
 import { connect } from 'react-redux'
 import VoteControl from './VoteControl.js';
 
@@ -8,7 +8,7 @@ import {Link} from 'react-router-dom';
 class PostListItem extends Component{
    
    render(){
-      const {post, isHeader} = this.props;
+      const {post} = this.props;
 //      console.log(currentPost);
       
       const makeRow = function(post){

@@ -5,10 +5,7 @@ import {getCategories } from '../actions/actions'
 class Sidebar extends Component{
 
    render(){
-     const {categories, wholestore} = this.props;
-//     console.log(wholestore);
-//     getCategories();
-//onClick={() => selectCategory(category.name)}
+     const {categories} = this.props;
      return(
          <div className="sideBar col-sm-12 col-md-4 col-lg-2">
             <h2>Categories</h2>
@@ -34,7 +31,6 @@ class Sidebar extends Component{
 function mapStateToProps (state) {
    return {
       categories:state.categories.categories,
-      wholestore:state
    };
 }
 /*

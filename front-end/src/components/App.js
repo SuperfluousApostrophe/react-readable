@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import Sidebar from './Sidebar.js';
-import PostDialog from './PostDialog.js';
+//import PostDialog from './PostDialog.js';
 import PostList from './PostList.js';
 import { Route, Switch, withRouter } from 'react-router-dom'
 import PostDetail from './PostDetail.js';
