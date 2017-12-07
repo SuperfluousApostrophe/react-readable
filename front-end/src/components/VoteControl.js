@@ -16,9 +16,9 @@ class VoteControl extends Component{
       const {id, currentScore} = this.props;
       return( 
             <div> 
-                  <FontAwesome className="voteControl" name='arrow-down' onClick={(e)=>this.vote('downVote', id,e)}/>
+                  <FontAwesome className="controlIcon" name='arrow-down' onClick={(e)=>this.vote('downVote', id,e)}/>
                   {currentScore}
-                  <FontAwesome className="voteControl" name='arrow-up'  onClick={(e)=>this.vote('upVote',id,e)}/>
+                  <FontAwesome className="controlIcon" name='arrow-up'  onClick={(e)=>this.vote('upVote',id,e)}/>
          </div>
       );
    };

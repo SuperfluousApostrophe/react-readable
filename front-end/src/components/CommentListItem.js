@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 //import { connect } from 'react-redux'
 import VoteControl from './VoteControl.js';
-
+import EditItemControl from './EditItemControl.js';
 class CommentListItem extends Component{
    
    render(){
@@ -22,6 +22,7 @@ class CommentListItem extends Component{
             <div className="row  col-sm-12 col-md-12 col-lg-12">
               {comment.body}
             </div>
+            <EditItemControl item={comment} controlType="comment"/>
          </div>
       );
    };
