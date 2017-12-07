@@ -9,7 +9,7 @@ class CommentList extends Component {
       function buildCommentRows(){
          let rows = [];
          if(Object.keys(comments).length>0){
-            let commentsForPosts = comments[currentPost.id];
+            let commentsForPosts = comments[currentPost.id] || [];
                for(let comment of commentsForPosts){
                   rows.push(<CommentListItem  key={comment.id} comment={comment}/>); 
                }

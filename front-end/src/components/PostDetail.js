@@ -6,20 +6,26 @@ import PostDetailBody from './PostDetailBody.js';
 import CommentList from './CommentList.js';
 
 class PostDetail extends Component{
-   setCurrentPost = function(postId){
-      this.setState({currentPost:this.posts.filter(post => post.id === postId)[0]});
-   }
    componentDidMount(){
       this.props.fetchCommentsForPost({postId:this.props.match.params.postId});
    }
+   componentDidReceiveProps(){
+       //does post exist? if not, redirect the page!
+      
+      //TODO: this now breaks loading a post by url. 
+      if(this.props.posts.filter(post => post.id === this.props.match.params.postId).length!==1){
+         console.log("postobj does not exist. Redirect!");
+        this.props.history.push('/');
+      }
+   }
    render(){
       const postId = this.props.match.params.postId;
-      const currentPost = this.props.posts.filter(post => post.id === postId)[0];
+      const currentPost = this.props.posts.filter(post => post.id === postId)[0] || {};
       
       return(
          <div>
             <PostDetailBody currentPost={currentPost}/>
-            {<CommentList currentPost={currentPost} />        }
+            {<CommentList currentPost={currentPost} />}
          </div>
          
          

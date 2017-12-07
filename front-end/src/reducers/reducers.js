@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import {SAVE_SINGLE_COMMENT,RECEIVE_COMMENTS_FOR_POST,SAVE_SINGLE_POST,GET_CATEGORIES, RECEIVE_POSTS, CHANGE_CAT, ADD_POST_TO_CAT,ADD_CAT_TO_POST_LIST} from '../actions/actions.js';
+import {DELETE_POST,SAVE_SINGLE_COMMENT,RECEIVE_COMMENTS_FOR_POST,SAVE_SINGLE_POST,GET_CATEGORIES, RECEIVE_POSTS, CHANGE_CAT, ADD_POST_TO_CAT,ADD_CAT_TO_POST_LIST} from '../actions/actions.js';
 const defaultPostState = {items: [], postsByCategory:{all:[]} };
 const defaultCategoryList = {categories: []};
 const defaultComments = {};
@@ -67,31 +67,19 @@ function post(state = defaultPostState, action) {
                )
            ]
          };
-//      case CREATE_POST:
-//         return {
-//            ...state,
-//           [id]:{
-//               title: title,
-//               body: body,
-//               author:author,
-//               category: category,
-//               timestamp:timestamp
-//           } 
-//         };
-//      case EDIT_POST:
-//         return {
-//            ...state,
-//           [id]:{
-//               ...state[id],
-//               title: title,
-//               body: body,
-//           } 
-//         };
-//      case DELETE_POST:
-//         return {
-//            ...state,
-//           [id]:null 
-//         };
+      case DELETE_POST:
+         return {
+            ...state,
+            items: [ 
+               ...state.items.filter(
+                  function(item){
+                     if(item.id !== id){
+                        return item;
+                     }
+                  }
+               )
+           ]
+         };
       default:
          return state;
    }
@@ -118,6 +106,14 @@ function comments(state = defaultComments, action){
                )
            ]
          };
+      case DELETE_POST:
+         let stateCopy = [...state];
+         if(stateCopy.hasOwnProperty(id)){
+            delete(stateCopy[id]);
+         }
+         return{
+            ...stateCopy
+         };
       default:
          return state;
    }
@@ -129,13 +125,9 @@ function categories(state = defaultCategoryList, action) {
          return {
             categories: action.categories
          };
-//      case GET_POSTS_BY_CATEGORY:
-//         return{
-//            
-//         };
       default:
          return state;
-}
+   }
 };
 
 

@@ -1,5 +1,4 @@
 export const CREATE_POST = 'CREATE_POST';
-export const DELETE_POST = 'DELETE_POST';
 export const EDIT_POST = 'EDIT_POST';
 export const GET_POSTS = 'GET_POSTS';
 
@@ -130,7 +129,13 @@ export function saveSingleComment(data){
       comment: data
    };
 }
-
+export const DELETE_POST = 'DELETE_POST';
+export function deletePost(id){
+   return {
+      type:DELETE_POST,
+      id
+   };
+}
 /* This is a thunk, not an action creator*/
 /*
  * changes the vote on the server by calling the API
@@ -190,6 +195,40 @@ export function fetchSinglePost(postId){
 ////            console.log(posts);
 //            //call the action creator receivePosts
 //            dispatch(receivePosts(posts));
+      });
+   };
+}
+
+
+/* This is a thunk, not an action creator*/
+/* Fetches a single Post - will be used when upvoting - maybe*/
+export function deleteItem({id, type}){
+//   console.log("attempting to delete item", id, type);
+   const authHeader = {'Authorization': 'true'};
+   let requestURL;
+   switch(type){
+      case 'comment':
+         requestURL = 'http://localhost:3001/comments/'+id;
+         break;
+      default:
+         requestURL = 'http://localhost:3001/posts/'+id;
+         break;
+   }
+   return function(dispatch){
+      return fetch(requestURL, { 
+         headers: authHeader, 
+         method:'DELETE' , 
+      })
+      .then(
+         response => response.json(),
+         error => console.log('An error occurred.', error)
+      )
+      .then(
+         post => {
+//            console.log(post);
+            dispatch(deletePost(id));
+            ////dispatch(deleteComment(id));
+
       });
    };
 }

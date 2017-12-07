@@ -1,12 +1,19 @@
 import React, {Component} from 'react';
 import FontAwesome from 'react-fontawesome';
 import { connect } from 'react-redux'
-//import {vote} from '../actions/actions';
+import {deleteItem} from '../actions/actions';
+import { Redirect } from 'react-router';
 
 class EditItemControl extends Component{
+   constructor () {
+    super();
+    this.state = {
+      redirectOnPostDelete: false
+    };
+  }
    editItem = function({id, body, title}, type, e){
       e.preventDefault();
-      console.log(id, body, title);
+//      console.log(id, body, title);
       const timestamp = Date.now();
       if(type==='post'){
          
@@ -16,11 +23,10 @@ class EditItemControl extends Component{
    }
    deleteItem = function(id, type, e){
       e.preventDefault();
-      console.log(id, type);
+//      console.log(id, type);
+      this.props.delete({id,type});
       if(type==='post'){
-         
-      } else {
-         
+         this.setState({ redirectOnPostDelete: true });
       }
    }
    render(){
@@ -28,12 +34,16 @@ class EditItemControl extends Component{
       const id = item.id;
       const body = item.body;
       const title = item.title || '';
+      const redirectOnPostDelete = this.state.redirectOnPostDelete;
       return( 
             <div className="row postDetailControls  col-sm-12 col-md-12 col-lg-12">
                <div className="col-md-3 col-lg-3">
                   <FontAwesome className="controlIcon" name='pencil-square-o'  onClick={(e)=>this.editItem({id:id, body:body, title:title},controlType, e )}/>
                   <FontAwesome className="controlIcon" name='trash-o'  onClick={(e)=>this.deleteItem(id,controlType, e )}/>
                </div>
+               {redirectOnPostDelete && (
+                  <Redirect to="/"/>
+                )}
             </div>
       );
    };
@@ -54,7 +64,7 @@ function mapDispatchToProps (dispatch) {
   return {
 //     fetchSinglePost: (data) => dispatch(fetchSinglePost(data)),
 //      changeVoteScore: (data) => dispatch(changeVoteScore(data)),
-//      vote: (data) => dispatch(vote(data)),
+      delete: (data) => dispatch(deleteItem(data)),
   };
 }
 
