@@ -39,7 +39,7 @@ class PostList extends Component {
          return rows;
       }
       return(
-         <div className="posts row col-sm-12 col-md-8 col-lg-10"> 
+         <div className="posts"> 
             <h2>Showing {currentCat} Posts</h2>
             <PostListItem/> 
             { buildPostRows() }

@@ -7,7 +7,7 @@ class Sidebar extends Component{
    render(){
      const {categories} = this.props;
      return(
-         <div className="sideBar col-sm-12 col-md-4 col-lg-2">
+         <div className="sideBar text-center col-sm-12 col-md-12 col-lg-12">
             <h2>Categories</h2>
             <ul className="list-group">
                <li className="cat-list list-group-item" >

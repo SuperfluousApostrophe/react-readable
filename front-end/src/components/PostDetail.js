@@ -10,9 +10,6 @@ class PostDetail extends Component{
       this.props.fetchCommentsForPost({postId:this.props.match.params.postId});
    }
    componentDidReceiveProps(){
-       //does post exist? if not, redirect the page!
-      
-      //TODO: this now breaks loading a post by url. 
       if(this.props.posts.filter(post => post.id === this.props.match.params.postId).length!==1){
          console.log("postobj does not exist. Redirect!");
         this.props.history.push('/');

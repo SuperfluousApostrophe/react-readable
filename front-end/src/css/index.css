@@ -10,11 +10,7 @@ ul.newPostCategory li {
     display:inline;
     padding:0px 5px;
 }
-div.voteScore{
-
-}
 li.cat-list {
-     /*cursor: pointer;*/
      text-transform: uppercase;
 }
 .posts h2 {
@@ -30,4 +26,7 @@ textarea.postEntry {
 .controlIcon{
     cursor:pointer;
     padding:0 5px;
+}
+.sideBar .listGroup{
+    width:100%;
 }

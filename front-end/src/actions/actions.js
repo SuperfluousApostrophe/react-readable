@@ -17,10 +17,8 @@ export function fetchCategories(){
       )
       .then(
          json => {
-//            console.log(json);
             dispatch(getCategories(json.categories));
             for(let cat of json.categories){
-//               console.log(cat);
                dispatch(addCategoryToPostList(cat));
             }
       });
@@ -52,12 +50,9 @@ export function fetchPosts(){
       )
       .then(
          posts => {
-//            console.log(posts);
             for(let post of posts){
-//               console.log(post);
                dispatch(addPostToCategory(post));
             }
-//            console.log(posts);
             //call the action creator receivePosts
             dispatch(receivePosts(posts));
       });
@@ -76,11 +71,8 @@ export function receiveCommentsForPost(data){
 /* This is a thunk, not an action creator*/
 export function fetchCommentsForPost(data){
    const {postId} = data;
-//   console.log("trying to fetch comments for ", postId);
    const authHeader = {'Authorization': 'true'};
-//   console.log(authHeader);
    return function(dispatch){
-//      console.log('doing fetch');
       return fetch('http://localhost:3001/posts/'+postId+'/comments', { headers: authHeader })
       .then(
          response => response.json(),
@@ -88,8 +80,6 @@ export function fetchCommentsForPost(data){
       )
       .then(
          comments => {
-//           console.log("here");
-//            console.log("Comments",comments);
             dispatch(receiveCommentsForPost({postId:postId, comments}));
       });
    };
@@ -102,17 +92,6 @@ export function selectCategory(categoryName){
       selectedCat:categoryName
    };
 }
-/* When we set the vote val on the server, we receive the latest obj back from the server. Update the version in our local store. */
-//export const CHANGE_VOTE_SCORE = 'VOTE';
-//export function changeVoteScore(data){
-//   const {voteVal, postId} = data;
-////   console.log('in action creater', voteVal, postId);
-//   return {
-//      type:CHANGE_VOTE_SCORE,
-//      vote:voteVal, 
-//      id:postId
-//   };
-//}
 export const SAVE_SINGLE_POST = 'SAVE_SINGLE_POST';
 export function saveSinglePost(data){
    return {
@@ -241,8 +220,6 @@ export function deleteItem({id, type, parentId}){
                   dispatch(deletePost({id}));
                   break;
             }
-//            console.log(post);
-
       });
    };
 }
@@ -257,9 +234,11 @@ export function deleteItem({id, type, parentId}){
  * -fix sidebar route issue
  * -create post
  * -edit post
- * -(soft) delete post
- * -create/edit/delete comments
- * -Upvotes
+ * -(soft) delete post**
+ * -create comment
+ * -edit comment
+ * -delete comments**
+ * -Upvotes**
  * 
  */
 

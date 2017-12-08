@@ -17,7 +17,7 @@ class CommentList extends Component {
          return rows;
       }
       return(
-         <div className="posts row col-sm-12 col-md-8 col-lg-10"> 
+         <div className="posts row col-sm-12 col-md-12 col-lg-12"> 
             { buildCommentRows() }
          </div>
       );

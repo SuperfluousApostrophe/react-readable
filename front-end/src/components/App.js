@@ -27,15 +27,25 @@ class App extends Component {
       <div className="App container">
          <h1>Readable</h1>
          <p className="lead">A React-Redux App for Udacity</p>
-         <div className="row col-sm-12 col-md-12 col-lg-12 btn-group">
-            <button className="btn btn-primary" onClick={(event)=>this.openPostModal(event)}>New Post</button>
+         <div className="row col-sm-12 col-md-12 col-lg-12">
+            <div className="col-sm-12 col-md-8 col-lg-10">
+               <Switch>
+                  <Route exact path='/' component={PostList}/>
+                  <Route exact path='/cat/:category' component={PostList}/>
+                  <Route exact path='/cat/:category/post/:postId' component={PostDetail}/>
+               </Switch>
+            </div>
+            <div className="col-sm-12 col-md-4 col-lg-2">
+               <div className="row col-sm-12 col-md-12 col-lg-12">
+                  <div className="col-sm-4 col-md-4 col-lg-4"></div>
+                  <div className="col-sm-4 col-md-4 col-lg-4  btn-group">
+                      <button className="btn btn-primary" onClick={(event)=>this.openPostModal(event)}>New Post</button>
+                  </div>  
+                  <div className="col-sm-4 col-md-4 col-lg-4"></div>
+               </div>
+               <Sidebar/>
+            </div>
          </div>
-         <Switch>
-            <Route exact path='/' component={PostList}/>
-            <Route exact path='/cat/:category' component={PostList}/>
-            <Route exact path='/cat/:category/post/:postId' component={PostDetail}/>
-         </Switch>
-         <Sidebar/>
       </div>
     );
   }

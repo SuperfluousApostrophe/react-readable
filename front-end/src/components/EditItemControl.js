@@ -39,11 +39,9 @@ class EditItemControl extends Component{
       const title = item.title || '';
       const redirectOnPostDelete = this.state.redirectOnPostDelete;
       return( 
-            <div className="row postDetailControls  col-sm-12 col-md-12 col-lg-12">
-               <div className="col-md-3 col-lg-3">
+            <div className="row postDetailControls  col-sm-12 col-md-12 col-lg-12 text-center">
                   <FontAwesome className="controlIcon" name='pencil-square-o'  onClick={(e)=>this.editItem({id:id, body:body, title:title},controlType, e )}/>
                   <FontAwesome className="controlIcon" name='trash-o'  onClick={(e)=>this.deleteItem(item,controlType, e )}/>
-               </div>
                {redirectOnPostDelete && (
                   <Redirect to="/"/>
                 )}
