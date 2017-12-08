@@ -130,10 +130,18 @@ export function saveSingleComment(data){
    };
 }
 export const DELETE_POST = 'DELETE_POST';
-export function deletePost(id){
+export function deletePost({id}){
    return {
       type:DELETE_POST,
       id
+   };
+}
+export const DELETE_COMMENT = 'DELETE_COMMENT';
+export function deleteComment({id, parentId}){
+   return {
+      type:DELETE_COMMENT,
+      id, 
+      parentId
    };
 }
 /* This is a thunk, not an action creator*/
@@ -187,7 +195,7 @@ export function fetchSinglePost(postId){
       )
       .then(
          post => {
-            console.log(post);
+//            console.log(post);
 //            for(let post of posts){
 ////               console.log(post);
 //               dispatch(addPostToCategory(post));
@@ -202,7 +210,7 @@ export function fetchSinglePost(postId){
 
 /* This is a thunk, not an action creator*/
 /* Fetches a single Post - will be used when upvoting - maybe*/
-export function deleteItem({id, type}){
+export function deleteItem({id, type, parentId}){
 //   console.log("attempting to delete item", id, type);
    const authHeader = {'Authorization': 'true'};
    let requestURL;
@@ -225,9 +233,15 @@ export function deleteItem({id, type}){
       )
       .then(
          post => {
+            switch(type){
+               case "comment":
+                  dispatch(deleteComment({id, parentId}));
+                  break;
+               default:
+                  dispatch(deletePost({id}));
+                  break;
+            }
 //            console.log(post);
-            dispatch(deletePost(id));
-            ////dispatch(deleteComment(id));
 
       });
    };

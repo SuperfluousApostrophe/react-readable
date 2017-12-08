@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import {DELETE_POST,SAVE_SINGLE_COMMENT,RECEIVE_COMMENTS_FOR_POST,SAVE_SINGLE_POST,GET_CATEGORIES, RECEIVE_POSTS, CHANGE_CAT, ADD_POST_TO_CAT,ADD_CAT_TO_POST_LIST} from '../actions/actions.js';
+import {DELETE_COMMENT, DELETE_POST,SAVE_SINGLE_COMMENT,RECEIVE_COMMENTS_FOR_POST,SAVE_SINGLE_POST,GET_CATEGORIES, RECEIVE_POSTS, CHANGE_CAT, ADD_POST_TO_CAT,ADD_CAT_TO_POST_LIST} from '../actions/actions.js';
 const defaultPostState = {items: [], postsByCategory:{all:[]} };
 const defaultCategoryList = {categories: []};
 const defaultComments = {};
@@ -75,6 +75,8 @@ function post(state = defaultPostState, action) {
                   function(item){
                      if(item.id !== id){
                         return item;
+                     } else {
+                        return null;
                      }
                   }
                )
@@ -113,6 +115,17 @@ function comments(state = defaultComments, action){
          }
          return{
             ...stateCopy
+         };
+      case DELETE_COMMENT:
+         const {parentId} = action;
+         return {
+            ...state,
+            [parentId]:[
+               ...state[parentId].filter(function(comment){
+                  if(comment.id !== id){return comment;}
+                  else { return null; }
+               })
+            ]
          };
       default:
          return state;

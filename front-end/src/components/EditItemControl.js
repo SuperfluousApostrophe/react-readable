@@ -21,12 +21,15 @@ class EditItemControl extends Component{
          
       }
    }
-   deleteItem = function(id, type, e){
+   deleteItem = function(item, type, e){
       e.preventDefault();
 //      console.log(id, type);
-      this.props.delete({id,type});
+      
       if(type==='post'){
+         this.props.delete({id:item.id,type});
          this.setState({ redirectOnPostDelete: true });
+      } else{
+         this.props.delete({id:item.id,type, parentId:item.parentId});
       }
    }
    render(){
@@ -39,7 +42,7 @@ class EditItemControl extends Component{
             <div className="row postDetailControls  col-sm-12 col-md-12 col-lg-12">
                <div className="col-md-3 col-lg-3">
                   <FontAwesome className="controlIcon" name='pencil-square-o'  onClick={(e)=>this.editItem({id:id, body:body, title:title},controlType, e )}/>
-                  <FontAwesome className="controlIcon" name='trash-o'  onClick={(e)=>this.deleteItem(id,controlType, e )}/>
+                  <FontAwesome className="controlIcon" name='trash-o'  onClick={(e)=>this.deleteItem(item,controlType, e )}/>
                </div>
                {redirectOnPostDelete && (
                   <Redirect to="/"/>
