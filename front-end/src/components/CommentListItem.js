@@ -7,7 +7,7 @@ class CommentListItem extends Component{
    render(){
       const {comment} = this.props;
       const d = new Date(comment.timestamp);
-      const commentDate = `${d.getMonth()}/${d.getDate()}/${d.getFullYear()} @ ${d.getHours()}: ${d.getMinutes()} `;
+      const commentDate = `${d.getMonth()}/${d.getDate()}/${d.getFullYear()} @ ${d.getHours()}:${d.getMinutes()} `;
     
       return( 
          <div className="row col-sm-12 col-md-12 col-lg-12">

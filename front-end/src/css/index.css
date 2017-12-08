@@ -30,3 +30,6 @@ textarea.postEntry {
 .sideBar .listGroup{
     width:100%;
 }
+.postTitle.h1{
+    margin-top: 0px;
+}
