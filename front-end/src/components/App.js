@@ -1,24 +1,31 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import Sidebar from './Sidebar.js';
-//import PostDialog from './PostDialog.js';
+import PostDialog from './PostDialog.js';
 import PostList from './PostList.js';
-import { Route, Switch, withRouter } from 'react-router-dom'
+import { Route, Switch, withRouter, Link } from 'react-router-dom'
 import PostDetail from './PostDetail.js';
-//import * as APIRequest from '../utils/api'
-//import {getCategories } from '../actions/actions'
-//import logo from './logo.svg';
-//import './App.css';
 
 class App extends Component {
    state = {
+      postModalOpen:false
    };
   openPostModal = function(){
      console.log("modal is open!");
+      this.setState(() => ({
+         postModalOpen: true,
+      }));
   }
+  closePostModal = function(){
+     console.log("modal is closed!");
+      this.setState(() => ({
+         postModalOpen: false,
+      }));
+  }
+  
   render() {
 //   const {createPost, editPost, deletePost, posts, categories} = this.props;
-//   const {postModalOpen} = this.state;
+   const {postModalOpen} = this.state;
    
 //   console.log('Store state',this.props);
 //   console.log('Component state', this.state);
@@ -33,13 +40,17 @@ class App extends Component {
                   <Route exact path='/' component={PostList}/>
                   <Route exact path='/cat/:category' component={PostList}/>
                   <Route exact path='/cat/:category/post/:postId' component={PostDetail}/>
+                  <Route exact path='/submit' component={PostDialog}/>
+                  <Route exact path='/edit/:postId' component={PostDialog}/>
                </Switch>
             </div>
             <div className="col-sm-12 col-md-4 col-lg-2">
                <div className="row col-sm-12 col-md-12 col-lg-12">
                   <div className="col-sm-4 col-md-4 col-lg-4"></div>
                   <div className="col-sm-4 col-md-4 col-lg-4  btn-group">
-                      <button className="btn btn-primary" onClick={(event)=>this.openPostModal(event)}>New Post</button>
+                     <Link to={{pathname: `/submit` }}>
+                        <button className="btn btn-primary">New Post</button>
+                     </Link>
                   </div>  
                   <div className="col-sm-4 col-md-4 col-lg-4"></div>
                </div>

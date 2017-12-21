@@ -1,7 +1,4 @@
-export const CREATE_POST = 'CREATE_POST';
-export const EDIT_POST = 'EDIT_POST';
-export const GET_POSTS = 'GET_POSTS';
-
+const uuidv4 = require('uuid/v4');
 export const GET_CATEGORIES = 'GET_CATEGORIES';
 export const getCategories = categories =>({
    type:GET_CATEGORIES,   
@@ -220,6 +217,52 @@ export function deleteItem({id, type, parentId}){
                   dispatch(deletePost({id}));
                   break;
             }
+      });
+   };
+}
+
+export const ADD_POST = 'ADD_POST';
+export function addSinglePost(newPost){
+     return {
+      type: ADD_POST,
+      post: newPost,
+   };
+}
+/* This is a thunk, not an action creator*/
+/*
+ * changes the vote on the server by calling the API
+ * 
+ */
+export function addPost(data){
+//   console.log(data);
+   const {title, body, category, author} = data;
+   const id = uuidv4();
+   const timestamp = Date.now();
+   const authHeader = {'Authorization': 'true', 'Content-Type': 'application/json'};
+   return function(dispatch){
+      let requestURL = 'http://localhost:3001/posts/';
+      return fetch(requestURL, { 
+         headers: authHeader, 
+         method:'POST' , 
+         body: JSON.stringify({
+             id,
+             timestamp,
+             title,
+             category,
+             body,
+             author
+           })
+      })
+      .then(
+         response => response.json(),
+         error => console.log('An error occurred.', error)
+      )
+      .then(
+         newPostObj => {
+            console.log(newPostObj);
+            dispatch(addSinglePost(newPostObj));
+            dispatch(addPostToCategory(newPostObj));
+            return newPostObj;
       });
    };
 }
