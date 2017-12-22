@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import {withRouter } from 'react-router-dom';
-import {addPost } from '../actions/actions.js'
+import {editPost, addPost,deleteItem } from '../actions/actions.js'
 
 class PostDialog extends Component{
-   constructor(){
-      super();
+   constructor(props){
+      super(props);
       this.state = {
          isEdit:false,
          postTitle:'',
@@ -15,8 +15,48 @@ class PostDialog extends Component{
       };
       this.handleSubmit = this.handleSubmit.bind(this);
       this.handleChange = this.handleChange.bind(this);
+//      console.log(progps);
    }
-   
+   componentWillReceiveProps(){
+//      console.log('Will Receive Props');
+//      console.log(this.state, this.props);
+      var postId = this.props.match.params.postId;
+//      console.log(postId);
+      var currentPost = this.props.posts.filter(post => post.id === postId)[0] || null;
+//      console.log(currentPost);
+      if(currentPost){
+         this.setState({
+            isEdit:true,
+            postTitle:currentPost.title,
+            postAuthor:currentPost.author,
+            postBody:currentPost.body,
+            postCategory:currentPost.category
+         });
+      } else {
+         this.setState({
+            isEdit:false,
+            postTitle:'',
+            postAuthor:'',
+            postBody:'',
+            postCategory:''
+         });
+      }
+   }
+   componentDidMount(){
+//      console.log('component mounted');
+      const postId = this.props.match.params.postId;
+      const currentPost = this.props.posts.filter(post => post.id === postId)[0] || null;
+//      console.log(currentPost);
+      if(currentPost){
+         this.setState({
+            isEdit:true,
+            postTitle:currentPost.title,
+            postAuthor:currentPost.author,
+            postBody:currentPost.body,
+            postCategory:currentPost.category
+         });
+      }
+   }
    handleChange(event){
       const target = event.target;
       const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -26,10 +66,16 @@ class PostDialog extends Component{
     });
    }
    handleSubmit(event) {
-     const addPost = this.props.addPost;
+     const {addPost, editPost} = this.props;
      event.preventDefault();
      if(this.state.isEdit){
         // send edit action
+         let promise = editPost({title:this.state.postTitle, body:this.state.postBody, id:this.props.match.params.postId});
+         promise.then(updatedPost => {
+            this.props.history.push(`/cat/${updatedPost.category}/post/${updatedPost.id}`);
+         },()=>{
+            //error
+         });
      } else {
         let promise = addPost({author:this.state.postAuthor, title:this.state.postTitle, body:this.state.postBody, category:this.state.postCategory});
         promise.then(newPost => {
@@ -39,13 +85,21 @@ class PostDialog extends Component{
         });
      }
    }
-   createPost = function(){
+   deleteItem = function(postId, type, e){
+      e.preventDefault();
+//      console.log(id, type);
       
+//      if(type==='post'){
+         this.props.delete({id:postId,type});
+         this.props.history.push(`/`);
+//      } else{
+//         this.props.delete({id:item.id,type, parentId:item.parentId});
+//      }
    }
    render(){
       const {categories} = this.props;
       const postId = this.props.match.params.postId;
-      
+//      console.log(postId);
       return(
          <div className="row newPostSection col-sm-12 col-md-12 col-lg-12">
             {this.state.isEdit
@@ -57,21 +111,21 @@ class PostDialog extends Component{
                <div className="row col-md-12 col-lg-12">
                   <div className=" col-sm-12 col-md-4 col-lg-4 ">
                      <label htmlFor="newPostCategory" >Post In &nbsp;</label>
-                     <select  name="postCategory" className="newPostCategory" className="text-capitalize" value={this.state.postCategory} onChange={this.handleChange}>
+                     <select  name="postCategory" disabled={this.state.isEdit} className="newPostCategory" className="text-capitalize" value={this.state.postCategory} onChange={this.handleChange}>
                         {categories.map(category => (
                            <option key={category.path} value={category.name}>{category.name}</option>
                         ))}
                     </select>
                   </div>
                   <div className=" col-sm-12 col-md-4 col-lg-4 ">
-                     <input name="postAuthor" type="text" placeholder="Author Name" value={this.state.postAuthor} onChange={this.handleChange}/>
+                     <input name="postAuthor" disabled={this.state.isEdit}  type="text" placeholder="Author Name" value={this.state.postAuthor} onChange={this.handleChange}/>
                   </div>
                   <div className="btn-group col-sm-12 col-md-4 col-lg-4 pull-right text-right">
                   {this.state.isEdit===false 
                   ? <button className="btn btn-primary">Submit</button> 
                   : <div>
                      <button className="btn btn-info">Save</button>
-                     <button className="btn btn-danger">Delete</button> 
+                     <button className="btn btn-danger"  onClick={(e)=>this.deleteItem(postId,'post', e )}>Delete</button> 
                   </div>
                   }
                   </div>
@@ -84,18 +138,20 @@ class PostDialog extends Component{
 function mapStateToProps (state) {
    return {
       categories:state.categories.categories,
+      posts: state.post.items,
    };
 }
 function mapDispatchToProps (dispatch) {
   return {
 //    createPost: (data) => dispatch(createPost(data)),
-//    editPost: (data) => dispatch(editPost(data)),
+      editPost: (data) => dispatch(editPost(data)),
 //    deletePost: (data) => dispatch(deletePost(data)),
-      addPost: (data) => dispatch(addPost(data))
+      addPost: (data) => dispatch(addPost(data)),
+      delete: (data) => dispatch(deleteItem(data)),
   };
 }
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(PostDialog)
+)(PostDialog))

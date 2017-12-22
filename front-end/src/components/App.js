@@ -10,26 +10,7 @@ class App extends Component {
    state = {
       postModalOpen:false
    };
-  openPostModal = function(){
-     console.log("modal is open!");
-      this.setState(() => ({
-         postModalOpen: true,
-      }));
-  }
-  closePostModal = function(){
-     console.log("modal is closed!");
-      this.setState(() => ({
-         postModalOpen: false,
-      }));
-  }
-  
   render() {
-//   const {createPost, editPost, deletePost, posts, categories} = this.props;
-   const {postModalOpen} = this.state;
-   
-//   console.log('Store state',this.props);
-//   console.log('Component state', this.state);
-//<Route exact path='/' component={PostRow}/>
    return (
       <div className="App container">
          <h1>Readable</h1>
@@ -61,21 +42,12 @@ class App extends Component {
     );
   }
 }
-//export const fetchCategories = () => dispatch => (
-//   APIRequest.fetchCategories().then(categories => dispatch(getCategories(categories)))
-//);
 function mapStateToProps (state) {
    return {
-//      post: state.post,
-//      name:'Mike',
-      categories:state.categories,
    };
 }
 function mapDispatchToProps (dispatch) {
   return {
-//    createPost: (data) => dispatch(createPost(data)),
-//    editPost: (data) => dispatch(editPost(data)),
-//    deletePost: (data) => dispatch(deletePost(data)),
   };
 }
 

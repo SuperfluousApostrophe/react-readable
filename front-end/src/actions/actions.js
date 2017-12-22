@@ -266,7 +266,38 @@ export function addPost(data){
       });
    };
 }
-
+/* This is a thunk, not an action creator*/
+/*
+ * changes the vote on the server by calling the API
+ * 
+ */
+export function editPost(data){
+//   console.log("editing", data);
+   const {title, body, id} = data;
+   const authHeader = {'Authorization': 'true', 'Content-Type': 'application/json'};
+   return function(dispatch){
+      let requestURL = 'http://localhost:3001/posts/'+id;
+      return fetch(requestURL, { 
+         headers: authHeader, 
+         method:'PUT' , 
+         body: JSON.stringify({
+             title,
+             body,
+           })
+      })
+      .then(
+         response => response.json(),
+         error => console.log('An error occurred.', error)
+      )
+      .then(
+         updatedPostObj => {
+//            console.log(updatedPostObj);
+            dispatch(saveSinglePost(updatedPostObj));
+//            dispatch(addPostToCategory(newPostObj));
+            return updatedPostObj;
+      });
+   };
+}
 /*
  * 
  * next steps: 

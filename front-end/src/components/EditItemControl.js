@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import FontAwesome from 'react-fontawesome';
 import { connect } from 'react-redux'
-import {deleteItem} from '../actions/actions';
+import {deleteItem, editItem} from '../actions/actions';
 import { Redirect } from 'react-router';
+import {withRouter } from 'react-router-dom';
 
 class EditItemControl extends Component{
    constructor () {
@@ -16,7 +17,7 @@ class EditItemControl extends Component{
 //      console.log(id, body, title);
       const timestamp = Date.now();
       if(type==='post'){
-         
+          this.props.history.push('/edit/'+id);
       } else {
          
       }
@@ -69,8 +70,8 @@ function mapDispatchToProps (dispatch) {
   };
 }
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(EditItemControl)
+)(EditItemControl))
    
