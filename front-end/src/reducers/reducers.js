@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import {ADD_POST,DELETE_COMMENT, DELETE_POST,SAVE_SINGLE_COMMENT,RECEIVE_COMMENTS_FOR_POST,SAVE_SINGLE_POST,GET_CATEGORIES, RECEIVE_POSTS, CHANGE_CAT, ADD_POST_TO_CAT,ADD_CAT_TO_POST_LIST} from '../actions/actions.js';
+import {ADD_COMMENT, ADD_POST,DELETE_COMMENT, DELETE_POST,SAVE_SINGLE_COMMENT,RECEIVE_COMMENTS_FOR_POST,SAVE_SINGLE_POST,GET_CATEGORIES, RECEIVE_POSTS, CHANGE_CAT, ADD_POST_TO_CAT,ADD_CAT_TO_POST_LIST} from '../actions/actions.js';
 const defaultPostState = {items: [], postsByCategory:{all:[]} };
 const defaultCategoryList = {categories: []};
 const defaultComments = {};
@@ -82,7 +82,7 @@ function post(state = defaultPostState, action) {
    }
 };
 function comments(state = defaultComments, action){
-   const {id, comments} = action;
+   const {id, comments,parentId} = action;
    switch(action.type){
       case RECEIVE_COMMENTS_FOR_POST:
          return {
@@ -103,6 +103,14 @@ function comments(state = defaultComments, action){
                )
            ]
          };
+      case ADD_COMMENT:
+         return{
+            ...state,
+            [parentId]:[
+               ...state[parentId],
+               action.comment        
+            ]
+         };
       case DELETE_POST:
          let stateCopy = [...state];
          if(stateCopy.hasOwnProperty(id)){
@@ -112,7 +120,6 @@ function comments(state = defaultComments, action){
             ...stateCopy
          };
       case DELETE_COMMENT:
-         const {parentId} = action;
          return {
             ...state,
             [parentId]:[

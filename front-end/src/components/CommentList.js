@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import CommentListItem from './CommentListItem.js';
+import CommentDialog from './CommentDialog.js';
 
 class CommentList extends Component {
    render(){
       const {comments, currentPost} = this.props;
-      
       function buildCommentRows(){
          let rows = [];
          if(Object.keys(comments).length>0){
@@ -18,6 +18,7 @@ class CommentList extends Component {
       }
       return(
          <div className="posts row col-sm-12 col-md-12 col-lg-12"> 
+            <CommentDialog currentPost={currentPost}/>
             { buildCommentRows() }
          </div>
       );

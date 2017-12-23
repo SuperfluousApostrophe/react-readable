@@ -291,23 +291,60 @@ export function editPost(data){
       )
       .then(
          updatedPostObj => {
-//            console.log(updatedPostObj);
             dispatch(saveSinglePost(updatedPostObj));
-//            dispatch(addPostToCategory(newPostObj));
             return updatedPostObj;
       });
    };
 }
+export const ADD_COMMENT = 'ADD_COMMENT';
+export function addSingleComment(newComment){
+     return {
+      type: ADD_COMMENT,
+      comment: newComment,
+      parentId:newComment.parentId,
+   };
+}
+export function addComment(data){
+//   console.log(data);
+   const {body, author, parentId} = data;
+   const id = uuidv4();
+   const timestamp = Date.now();
+   const authHeader = {'Authorization': 'true', 'Content-Type': 'application/json'};
+   return function(dispatch){
+      let requestURL = 'http://localhost:3001/comments/';
+      return fetch(requestURL, { 
+         headers: authHeader, 
+         method:'POST' , 
+         body: JSON.stringify({
+             id,
+             timestamp,
+             body,
+             author, 
+             parentId
+           })
+      })
+      .then(
+         response => response.json(),
+         error => console.log('An error occurred.', error)
+      )
+      .then(
+         newCommentObj => {
+//            console.log(newCommentObj);
+            dispatch(addSingleComment(newCommentObj));
+      });
+   };
+}
+
 /*
  * 
  * next steps: 
- * -create actions/reducers to retrieve comments for each post. 
- * -- on first load of post, pull all comments for that post and save in store. 
- * -- then on each subsequent load of post, pull from comment store instead of API call
+ * -create actions/reducers to retrieve comments for each post. **
+ * -- on first load of post, pull all comments for that post and save in store. **
+ * -- then on each subsequent load of post, pull from comment store instead of API call**
  * 
  * -fix sidebar route issue
- * -create post
- * -edit post
+ * -create post**
+ * -edit post**
  * -(soft) delete post**
  * -create comment
  * -edit comment

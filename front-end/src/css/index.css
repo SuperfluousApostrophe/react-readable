@@ -33,3 +33,9 @@ textarea.postEntry {
 .postTitle.h1{
     margin-top: 0px;
 }
+.commentSection{
+    margin-top:15px;
+}
+.commentInputControls{
+    margin-top:5px;
+}
