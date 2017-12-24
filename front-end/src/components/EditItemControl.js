@@ -19,7 +19,7 @@ class EditItemControl extends Component{
       if(type==='post'){
           this.props.history.push('/edit/'+id);
       } else {
-         
+         this.props.commentEditFunc(true);
       }
    }
    deleteItem = function(item, type, e){

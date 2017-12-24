@@ -259,7 +259,7 @@ export function addPost(data){
       )
       .then(
          newPostObj => {
-            console.log(newPostObj);
+//            console.log(newPostObj);
             dispatch(addSinglePost(newPostObj));
             dispatch(addPostToCategory(newPostObj));
             return newPostObj;
@@ -335,6 +335,32 @@ export function addComment(data){
    };
 }
 
+export function editComment(data){
+//   console.log("editing", data);
+   const { body, id} = data;
+   const timestamp = Date.now();
+   const authHeader = {'Authorization': 'true', 'Content-Type': 'application/json'};
+   return function(dispatch){
+      let requestURL = 'http://localhost:3001/comments/'+id;
+      return fetch(requestURL, { 
+         headers: authHeader, 
+         method:'PUT' , 
+         body: JSON.stringify({
+             timestamp,
+             body,
+           })
+      })
+      .then(
+         response => response.json(),
+         error => console.log('An error occurred.', error)
+      )
+      .then(
+         updatedCommentObj => {
+            dispatch(saveSingleComment(updatedCommentObj));
+//            return updatedPostObj;
+      });
+   };
+}
 /*
  * 
  * next steps: 
