@@ -42,12 +42,24 @@ class CommentDialog extends Component{
         // send edit action
          editComment({body:this.state.commentBody, id:this.state.commentId});
          this.props.commentEditFunc(false);
+         this.clearState();
      } else {
-        addComment({author:this.state.commentAuthor, body:this.state.commentBody, parentId:this.props.currentPost.id});
+         addComment({author:this.state.commentAuthor, body:this.state.commentBody, parentId:this.props.currentPost.id});
+         this.clearState();
      }
+   }
+   clearState(){
+      this.setState({
+         isEdit:false,
+         commentBody:'',
+         commentAuthor:'',
+         parentId:'',
+         commentId:'',
+      });
    }
    editCancel(e){
       e.preventDefault();
+      this.clearState();
       this.props.commentEditFunc(false);
    }
    render(){

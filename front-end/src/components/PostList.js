@@ -16,6 +16,9 @@ class PostList extends Component {
    componentDidUpdate(){
       this.updateselectedCategory();
    }
+   componentDidMount(){
+       this.updateselectedCategory();
+   }
    render(){
       
       const {posts, postsByCat, globalSettings} = this.props;

@@ -9,7 +9,7 @@ class PostDetailBody extends Component{
    render(){
       const {currentPost} = this.props;
       const d = new Date(currentPost.timestamp);
-      const postDate = `${d.getMonth()}/${d.getDate()}/${d.getFullYear()} @ ${d.getHours()}:${d.getMinutes()} `;
+      const postDate = d.toUTCString();//`${d.getMonth()}/${d.getDate()}/${d.getFullYear()} @ ${d.getHours()}:${d.getMinutes()} `;
       return( 
               <div className="row postDetail col-sm-12 col-md-12 col-lg-12">{currentPost!==undefined && 
               <div> 
@@ -20,7 +20,7 @@ class PostDetailBody extends Component{
                      </div>
                      <div className=" col-xs-9 col-sm-9 col-md-9 col-lg-9">
                         <div className="postTitle row h1">{currentPost.title}</div>
-                        <div className="row lead">[Created at {postDate} by {currentPost.author} in {currentPost.category}]</div>
+                        <div className="row postedBy">[Created on {postDate} by {currentPost.author} in {currentPost.category}]</div>
                      </div>
                   </div>
                   <div className="postDetailBody col-sm-12 col-md-12 col-lg-12">{currentPost.body}</div>

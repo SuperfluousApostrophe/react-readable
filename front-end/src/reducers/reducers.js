@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import {ADD_COMMENT, ADD_POST,DELETE_COMMENT, DELETE_POST,SAVE_SINGLE_COMMENT,RECEIVE_COMMENTS_FOR_POST,SAVE_SINGLE_POST,GET_CATEGORIES, RECEIVE_POSTS, CHANGE_CAT, ADD_POST_TO_CAT,ADD_CAT_TO_POST_LIST} from '../actions/actions.js';
+import {UPDATE_COMMENT_COUNT,ADD_COMMENT, ADD_POST,DELETE_COMMENT, DELETE_POST,SAVE_SINGLE_COMMENT,RECEIVE_COMMENTS_FOR_POST,SAVE_SINGLE_POST,GET_CATEGORIES, RECEIVE_POSTS, CHANGE_CAT, ADD_POST_TO_CAT,ADD_CAT_TO_POST_LIST} from '../actions/actions.js';
 const defaultPostState = {items: [], postsByCategory:{all:[]} };
 const defaultCategoryList = {categories: []};
 const defaultComments = {};
@@ -76,6 +76,21 @@ function post(state = defaultPostState, action) {
                   action.post
                ]
             
+         };
+      case UPDATE_COMMENT_COUNT:
+         console.log(action);
+         return {
+            ...state,
+            items: [ 
+               ...state.items.map(
+                  function(item, index){
+                     if(item.id === action.parentId){
+                        item.commentCount += action.commentModifier;
+                     }
+                     return item;
+                  }
+               )
+           ]
          };
       default:
          return state;

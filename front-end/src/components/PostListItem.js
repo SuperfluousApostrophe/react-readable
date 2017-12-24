@@ -21,8 +21,9 @@ class PostListItem extends Component{
         
          if(post){
             let path = `/cat/${post.category}/post/${post.id}`;
+            let catPath = `/cat/${post.category}`;
             rowData.voteScore = <VoteControl currentScore={post.voteScore}  voteType='post' id={post.id}/>;
-            rowData.category =  <Link to={path}>{post.category}</Link>;
+            rowData.category =  <Link to={catPath}>{post.category}</Link>;
             rowData.title =  <Link to={path}>{post.title} [{post.commentCount}]</Link>;
             rowData.author =  <Link to={path}>{post.author}</Link>;
          } 

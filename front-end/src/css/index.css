@@ -23,6 +23,9 @@ textarea.postEntry {
     border: 1px solid black;
     padding:10px;
 }
+.postDetail{
+    margin-bottom:15px;
+}
 .controlIcon{
     cursor:pointer;
     padding:0 5px;
@@ -38,4 +41,12 @@ textarea.postEntry {
 }
 .commentInputControls{
     margin-top:5px;
+}
+.commentPostedBy{
+    font-size: 10px;
+    font-style: italic;
+}
+.postedBy{
+    font-size: 12px;
+    font-style: italic;
 }

@@ -329,8 +329,8 @@ export function addComment(data){
       )
       .then(
          newCommentObj => {
-//            console.log(newCommentObj);
             dispatch(addSingleComment(newCommentObj));
+            dispatch(updateCommentCount({parentId, commentModifier:1}));
       });
    };
 }
@@ -357,45 +357,24 @@ export function editComment(data){
       .then(
          updatedCommentObj => {
             dispatch(saveSingleComment(updatedCommentObj));
-//            return updatedPostObj;
       });
    };
 }
-/*
- * 
- * next steps: 
- * -create actions/reducers to retrieve comments for each post. **
- * -- on first load of post, pull all comments for that post and save in store. **
- * -- then on each subsequent load of post, pull from comment store instead of API call**
- * 
- * -fix sidebar route issue
- * -create post**
- * -edit post**
- * -(soft) delete post**
- * -create comment
- * -edit comment
- * -delete comments**
- * -Upvotes**
- * 
- */
-
-
-
-
-
+export const UPDATE_COMMENT_COUNT = 'UPDATE_COMMENT_COUNT';
+export function updateCommentCount(data){
+   console.log(data); 
+   return {
+      type: UPDATE_COMMENT_COUNT,
+      parentId:data.parentId,
+      commentModifier:data.commentModifier,
+   };
+}
 /* Requests a single post */
 export const GET_SINGLE_POST = 'GET_SINGLE_POST';
 export const getSinglePost = postId =>({
    type:GET_SINGLE_POST,
    postId:postId
 });
-///* Requests all comments for a single post */
-//export const GET_COMMENTS_FOR_POST = 'GET_COMMENTS_FOR_POST';
-//export const getSinglePost = postId =>({
-//   type:GET_COMMENTS_FOR_POST,
-//   postId:postId
-//});
-
 
 
 
