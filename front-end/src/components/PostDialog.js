@@ -17,13 +17,9 @@ class PostDialog extends Component{
       this.handleChange = this.handleChange.bind(this);
 //      console.log(progps);
    }
-   componentWillReceiveProps(){
-//      console.log('Will Receive Props');
-//      console.log(this.state, this.props);
-      var postId = this.props.match.params.postId;
-//      console.log(postId);
-      var currentPost = this.props.posts.filter(post => post.id === postId)[0] || null;
-//      console.log(currentPost);
+   componentWillReceiveProps(nextProps){
+      var postId = nextProps.match.params.postId;
+      var currentPost = nextProps.posts.filter(post => post.id === postId)[0] || null;
       if(currentPost){
          this.setState({
             isEdit:true,
@@ -38,15 +34,13 @@ class PostDialog extends Component{
             postTitle:'',
             postAuthor:'',
             postBody:'',
-            postCategory:''
+            postCategory:nextProps.categories.length>0?nextProps.categories[0].name:''
          });
       }
    }
    componentDidMount(){
-//      console.log('component mounted');
       const postId = this.props.match.params.postId;
       const currentPost = this.props.posts.filter(post => post.id === postId)[0] || null;
-//      console.log(currentPost);
       if(currentPost){
          this.setState({
             isEdit:true,
@@ -72,14 +66,14 @@ class PostDialog extends Component{
         // send edit action
          let promise = editPost({title:this.state.postTitle, body:this.state.postBody, id:this.props.match.params.postId});
          promise.then(updatedPost => {
-            this.props.history.push(`/cat/${updatedPost.category}/post/${updatedPost.id}`);
+            this.props.history.push(`/${updatedPost.category}/${updatedPost.id}`);
          },()=>{
             //error
          });
      } else {
         let promise = addPost({author:this.state.postAuthor, title:this.state.postTitle, body:this.state.postBody, category:this.state.postCategory});
         promise.then(newPost => {
-           this.props.history.push(`/cat/${newPost.category}/post/${newPost.id}`);
+           this.props.history.push(`/${newPost.category}/${newPost.id}`);
         },()=>{
            //error
         });
@@ -111,7 +105,7 @@ class PostDialog extends Component{
                <div className="row col-md-12 col-lg-12">
                   <div className=" col-sm-12 col-md-4 col-lg-4 ">
                      <label htmlFor="newPostCategory" >Post In &nbsp;</label>
-                     <select  name="postCategory" disabled={this.state.isEdit} className="newPostCategory" className="text-capitalize" value={this.state.postCategory} onChange={this.handleChange}>
+                     <select  name="postCategory" disabled={this.state.isEdit} className="newPostCategory text-capitalize" value={this.state.postCategory} onChange={this.handleChange}>
                         {categories.map(category => (
                            <option key={category.path} value={category.name}>{category.name}</option>
                         ))}

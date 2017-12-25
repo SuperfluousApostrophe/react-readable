@@ -11,7 +11,6 @@ class PostDetail extends Component{
    }
    componentDidReceiveProps(){
       if(this.props.posts.filter(post => post.id === this.props.match.params.postId).length!==1){
-         console.log("postobj does not exist. Redirect!");
         this.props.history.push('/');
       }
    }

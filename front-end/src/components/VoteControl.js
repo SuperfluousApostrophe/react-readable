@@ -6,10 +6,6 @@ import {vote} from '../actions/actions';
 class VoteControl extends Component{
    vote = function(voteType, id, e){
       e.preventDefault();
-//      const voteVals = {
-//        upVote:1,
-//        downVote:-1
-//      };
       this.props.vote({voteType:voteType,id:id, voteObjType:this.props.voteType});
    }
    render(){

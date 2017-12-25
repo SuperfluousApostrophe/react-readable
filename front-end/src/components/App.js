@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import Sidebar from './Sidebar.js';
 import PostDialog from './PostDialog.js';
-import PostList from './PostList.js';
+//import PostList from './PostList.js';
+import PostListing from './PostListing.js';
 import { Route, Switch, withRouter, Link } from 'react-router-dom'
 import PostDetail from './PostDetail.js';
 
@@ -18,11 +19,12 @@ class App extends Component {
          <div className="row col-sm-12 col-md-12 col-lg-12">
             <div className="col-sm-12 col-md-8 col-lg-10">
                <Switch>
-                  <Route exact path='/' component={PostList}/>
-                  <Route exact path='/cat/:category' component={PostList}/>
-                  <Route exact path='/cat/:category/post/:postId' component={PostDetail}/>
+                  <Route exact path='/' component={PostListing}/>
                   <Route exact path='/submit' component={PostDialog}/>
                   <Route exact path='/edit/:postId' component={PostDialog}/>
+                  <Route exact path='/:category' component={PostListing}/>
+                  <Route exact path='/:category/:postId' component={PostDetail}/>
+                 
                </Switch>
             </div>
             <div className="col-sm-12 col-md-4 col-lg-2">

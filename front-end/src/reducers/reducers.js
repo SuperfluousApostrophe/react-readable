@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import {UPDATE_COMMENT_COUNT,ADD_COMMENT, ADD_POST,DELETE_COMMENT, DELETE_POST,SAVE_SINGLE_COMMENT,RECEIVE_COMMENTS_FOR_POST,SAVE_SINGLE_POST,GET_CATEGORIES, RECEIVE_POSTS, CHANGE_CAT, ADD_POST_TO_CAT,ADD_CAT_TO_POST_LIST} from '../actions/actions.js';
+import {DELETE_POST_FROM_CATS, UPDATE_COMMENT_COUNT,ADD_COMMENT, ADD_POST,DELETE_COMMENT, DELETE_POST,SAVE_SINGLE_COMMENT,RECEIVE_COMMENTS_FOR_POST,SAVE_SINGLE_POST,GET_CATEGORIES, RECEIVE_POSTS, CHANGE_CAT, ADD_POST_TO_CAT,ADD_CAT_TO_POST_LIST} from '../actions/actions.js';
 const defaultPostState = {items: [], postsByCategory:{all:[]} };
 const defaultCategoryList = {categories: []};
 const defaultComments = {};
@@ -68,6 +68,35 @@ function post(state = defaultPostState, action) {
                )
            ]
          };
+      case DELETE_POST_FROM_CATS:
+         return {
+            ...state,//spread the state
+            postsByCategory:{
+               ...state.postsByCategory,
+              [ALL]:[
+                 ...state.postsByCategory[ALL].filter(
+                  function(item){
+                     if(item!== id){
+                        return item;
+                     } else {
+                        return null;
+                     }
+                  }
+               )
+              ],
+              [category]:[
+                  ...state.postsByCategory[category].filter(
+                  function(item){
+                     if(item!== id){
+                        return item;
+                     } else {
+                        return null;
+                     }
+                  }
+               )
+              ], 
+            }
+         };
       case ADD_POST:
          return {
             ...state,
@@ -78,7 +107,6 @@ function post(state = defaultPostState, action) {
             
          };
       case UPDATE_COMMENT_COUNT:
-         console.log(action);
          return {
             ...state,
             items: [ 

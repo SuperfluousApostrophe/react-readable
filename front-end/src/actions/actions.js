@@ -187,7 +187,6 @@ export function fetchSinglePost(postId){
 /* This is a thunk, not an action creator*/
 /* Fetches a single Post - will be used when upvoting - maybe*/
 export function deleteItem({id, type, parentId}){
-//   console.log("attempting to delete item", id, type);
    const authHeader = {'Authorization': 'true'};
    let requestURL;
    switch(type){
@@ -215,6 +214,7 @@ export function deleteItem({id, type, parentId}){
                   break;
                default:
                   dispatch(deletePost({id}));
+                  dispatch(deletePostFromCategory(post));
                   break;
             }
       });
@@ -234,7 +234,6 @@ export function addSinglePost(newPost){
  * 
  */
 export function addPost(data){
-//   console.log(data);
    const {title, body, category, author} = data;
    const id = uuidv4();
    const timestamp = Date.now();
@@ -259,7 +258,6 @@ export function addPost(data){
       )
       .then(
          newPostObj => {
-//            console.log(newPostObj);
             dispatch(addSinglePost(newPostObj));
             dispatch(addPostToCategory(newPostObj));
             return newPostObj;
@@ -272,7 +270,6 @@ export function addPost(data){
  * 
  */
 export function editPost(data){
-//   console.log("editing", data);
    const {title, body, id} = data;
    const authHeader = {'Authorization': 'true', 'Content-Type': 'application/json'};
    return function(dispatch){
@@ -305,7 +302,6 @@ export function addSingleComment(newComment){
    };
 }
 export function addComment(data){
-//   console.log(data);
    const {body, author, parentId} = data;
    const id = uuidv4();
    const timestamp = Date.now();
@@ -336,7 +332,6 @@ export function addComment(data){
 }
 
 export function editComment(data){
-//   console.log("editing", data);
    const { body, id} = data;
    const timestamp = Date.now();
    const authHeader = {'Authorization': 'true', 'Content-Type': 'application/json'};
@@ -362,13 +357,21 @@ export function editComment(data){
 }
 export const UPDATE_COMMENT_COUNT = 'UPDATE_COMMENT_COUNT';
 export function updateCommentCount(data){
-   console.log(data); 
    return {
       type: UPDATE_COMMENT_COUNT,
       parentId:data.parentId,
       commentModifier:data.commentModifier,
    };
 }
+export const DELETE_POST_FROM_CATS = 'DELETE_POST_FROM_CATS';
+export function deletePostFromCategory(post){
+   return {
+      type:DELETE_POST_FROM_CATS,   
+      ...post
+   };
+};
+
+
 /* Requests a single post */
 export const GET_SINGLE_POST = 'GET_SINGLE_POST';
 export const getSinglePost = postId =>({

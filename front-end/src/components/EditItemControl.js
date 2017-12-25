@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import FontAwesome from 'react-fontawesome';
 import { connect } from 'react-redux'
-import {deleteItem, editItem} from '../actions/actions';
+import {deleteItem} from '../actions/actions';
 import { Redirect } from 'react-router';
 import {withRouter } from 'react-router-dom';
 
@@ -14,8 +14,6 @@ class EditItemControl extends Component{
   }
    editItem = function({id, body, title}, type, e){
       e.preventDefault();
-//      console.log(id, body, title);
-      const timestamp = Date.now();
       if(type==='post'){
           this.props.history.push('/edit/'+id);
       } else {
@@ -24,8 +22,6 @@ class EditItemControl extends Component{
    }
    deleteItem = function(item, type, e){
       e.preventDefault();
-//      console.log(id, type);
-      
       if(type==='post'){
          this.props.delete({id:item.id,type});
          this.setState({ redirectOnPostDelete: true });
@@ -56,7 +52,6 @@ class EditItemControl extends Component{
  */
 function mapStateToProps (state, ownProps) {
    return {
-//      state:state
    };
 }
 /*
@@ -64,8 +59,6 @@ function mapStateToProps (state, ownProps) {
  */
 function mapDispatchToProps (dispatch) {
   return {
-//     fetchSinglePost: (data) => dispatch(fetchSinglePost(data)),
-//      changeVoteScore: (data) => dispatch(changeVoteScore(data)),
       delete: (data) => dispatch(deleteItem(data)),
   };
 }

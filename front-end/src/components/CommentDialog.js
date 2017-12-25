@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import {deleteItem, addComment, editComment } from '../actions/actions.js'
+import {addComment, editComment } from '../actions/actions.js'
 
 class CommentDialog extends Component{
    constructor(props){
@@ -16,8 +16,6 @@ class CommentDialog extends Component{
       this.handleChange = this.handleChange.bind(this);
    }
    componentDidMount(){
-//      console.log('component mounted');
-//       console.log(this.props);
       if(this.props.hasOwnProperty('isEdit')){
          this.setState(
             {isEdit:this.props.isEdit, 
@@ -37,15 +35,16 @@ class CommentDialog extends Component{
    handleSubmit(event) {
      const {addComment, editComment} = this.props;
      event.preventDefault();
-//     console.log(this.state, this.props);
      if(this.state.isEdit){
         // send edit action
          editComment({body:this.state.commentBody, id:this.state.commentId});
          this.props.commentEditFunc(false);
          this.clearState();
      } else {
-         addComment({author:this.state.commentAuthor, body:this.state.commentBody, parentId:this.props.currentPost.id});
-         this.clearState();
+        if(this.state.commentBody){
+            addComment({author:this.state.commentAuthor, body:this.state.commentBody, parentId:this.props.currentPost.id});
+            this.clearState();
+         }
      }
    }
    clearState(){
@@ -62,9 +61,11 @@ class CommentDialog extends Component{
       this.clearState();
       this.props.commentEditFunc(false);
    }
+   addCancel(e){
+      e.preventDefault();
+      this.clearState(); 
+   }
    render(){
-      const {categories, currentPost} = this.props;
-      
       return(
          <div className="row commentSection col-sm-12 col-md-12 col-lg-12">
             <form onSubmit={this.handleSubmit}>
@@ -81,7 +82,7 @@ class CommentDialog extends Component{
                   {this.state.isEdit===false 
                   ?  <div  className="btn-group col-sm-12 col-md-6 col-lg-6 pull-right text-right">
                         <button className="btn btn-primary">Submit</button> 
-                        <button className="btn btn-info">Cancel</button> 
+                        <button className="btn btn-info"  onClick={(e)=>this.addCancel(e)}>Cancel</button> 
                      </div>
                   : <div className="btn-group col-sm-12 col-md-12 col-lg-12 pull-right text-right">
                      <button className="btn btn-info">Save</button>
@@ -96,15 +97,12 @@ class CommentDialog extends Component{
 };
 function mapStateToProps (state) {
    return {
-//      categories:state.categories.categories,
-//      comments: state.comment.items,
    };
 }
 function mapDispatchToProps (dispatch) {
   return {
      addComment: (data) => dispatch(addComment(data)),
      editComment: (data) => dispatch(editComment(data)),
-//      delete: (data) => dispatch(deleteItem(data)),
   };
 }
 

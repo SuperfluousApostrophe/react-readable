@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-//import { connect } from 'react-redux'
 import VoteControl from './VoteControl.js';
 import EditItemControl from './EditItemControl.js';
 import CommentDialog from './CommentDialog.js';
@@ -17,7 +16,7 @@ class CommentListItem extends Component{
    render(){
       const {comment} = this.props;
       const d = new Date(comment.timestamp);
-      const commentDate = d.toUTCString();//`${d.getMonth()}/${d.getDate()}/${d.getFullYear()} @ ${d.getHours()}:${d.getMinutes()} `;
+      const commentDate = d.toUTCString();
     
       return( 
          <div className="row col-sm-12 col-md-12 col-lg-12">
