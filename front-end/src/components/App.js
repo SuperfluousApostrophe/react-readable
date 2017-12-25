@@ -24,7 +24,7 @@ class App extends Component {
                   <Route exact path='/edit/:postId' component={PostDialog}/>
                   <Route exact path='/:category' component={PostListing}/>
                   <Route exact path='/:category/:postId' component={PostDetail}/>
-                 
+                  
                </Switch>
             </div>
             <div className="col-sm-12 col-md-4 col-lg-2">

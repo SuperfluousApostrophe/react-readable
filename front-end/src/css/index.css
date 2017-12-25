@@ -50,6 +50,7 @@ textarea.postEntry {
     font-size: 12px;
     font-style: italic;
 }
-.postsHeader > .voteScore{
+.postsHeader > .sortable{
     cursor:pointer;
+    text-decoration:underline;
 }

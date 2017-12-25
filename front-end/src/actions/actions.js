@@ -211,6 +211,7 @@ export function deleteItem({id, type, parentId}){
             switch(type){
                case "comment":
                   dispatch(deleteComment({id, parentId}));
+                  dispatch(updateCommentCount({parentId, commentModifier:-1}));
                   break;
                default:
                   dispatch(deletePost({id}));

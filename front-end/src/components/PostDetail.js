@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import {fetchCommentsForPost } from '../actions/actions';
 import PostDetailBody from './PostDetailBody.js';
 import CommentList from './CommentList.js';
+import ErrorPage from './ErrorPage.js'
 
 class PostDetail extends Component{
    componentDidMount(){
@@ -16,15 +17,19 @@ class PostDetail extends Component{
    }
    render(){
       const postId = this.props.match.params.postId;
-      const currentPost = this.props.posts.filter(post => post.id === postId)[0] || {};
+      const currentPost = this.props.posts.filter(post => post.id === postId)[0] || false;
       
       return(
          <div>
-            <PostDetailBody currentPost={currentPost}/>
-            {<CommentList currentPost={currentPost} />}
+            {!currentPost?
+               <ErrorPage errorCode='404'/>
+            :
+            <div>
+               <PostDetailBody currentPost={currentPost}/>
+               {<CommentList currentPost={currentPost} />}
+            </div>
+         }
          </div>
-         
-         
       );
    };
 };

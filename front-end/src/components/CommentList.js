@@ -19,6 +19,7 @@ class CommentList extends Component {
       return(
          <div className="posts row col-sm-12 col-md-12 col-lg-12"> 
             <CommentDialog currentPost={currentPost}/>
+            <span>There are {currentPost.commentCount} comments for this post.</span>
             { buildCommentRows() }
          </div>
       );

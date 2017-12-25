@@ -40,7 +40,7 @@ class PostListing extends Component {
          this.filterPostsBySelectedCategory(posts,postsByCat, selectedCategory);
       }
    }
-   sortPosts(e){
+   sortPosts(e, field){
       this.sortAsc = !this.sortAsc;
       const {posts, postsByCat} = this.props;
       e.preventDefault();
@@ -49,9 +49,9 @@ class PostListing extends Component {
       let sortedPosts = posts
          .sort((a,b)=> {
             if(this.sortAsc){
-                return a.voteScore - b.voteScore;
+                return a[field] - b[field];
              } else {
-                return b.voteScore - a.voteScore;
+                return b[field] - a[field];
              }
           })
          .filter(post => postsByCat[category].indexOf(post.id) !== -1);
@@ -81,9 +81,10 @@ class PostListing extends Component {
          <div className="posts"> 
          <h2>Showing {globalCat} Posts</h2>
             <div key="header" className="row col-sm-12 col-md-12 col-lg-12 postsHeader">
-               <div className="voteScore col-sm-2 col-md-3 col-lg-2" onClick={(e)=>this.sortPosts(e)}>Score</div>
+               <div className="voteScore sortable col-sm-2 col-md-2 col-lg-2" onClick={(e)=>this.sortPosts(e, 'voteScore')}>Score</div>
+               <div className="postTimestamp sortable col-sm-1 col-md-1 col-lg-2"  onClick={(e)=>this.sortPosts(e, 'timestamp')}>Posted</div> 
                <div className="postCategory col-sm-2 col-md-2 col-lg-2">Category</div> 
-               <div className="postTitle col-sm-5 col-md-5 col-lg-6">Title</div>
+               <div className="postTitle col-sm-4 col-md-4 col-lg-4">Title</div>
                <div className="postAuthor col-sm-3 col-md-2 col-lg-2">Author</div>
             </div>
             { this.buildPostRows() }
