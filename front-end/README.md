@@ -7,6 +7,9 @@ Uses React-Redux for state management.
 
 To get started right away:
 
+This project is split into two subfolders - api-server and front-end. The Front end is specifically searching for the API at http://localhost:3001. 
+
+cd into each directory and perform the following steps to begin Readable:
 * install all project dependencies with `npm install`
 * start the development server with `npm start`
 
